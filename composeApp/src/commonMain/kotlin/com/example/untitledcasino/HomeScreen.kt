@@ -13,6 +13,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.ViewModel
 import com.example.untitledcasino.data.CasinoDatabase
 import kotlinx.serialization.Serializable
 
@@ -25,14 +26,13 @@ data object HomeScreen {
 fun HomeScreen(
     onGameSelection: () -> Unit,
     onOpenCredits: () -> Unit,
-    database: CasinoDatabase,
+    viewModel: CasinoVM,
 ) {
-    val credits by database.getDao().getPlayerCredits().collectAsState(initial = 0)
     Column(
         modifier = Modifier.safeContentPadding().fillMaxSize().padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text("Credits: $credits")
+        CreditBalance(viewModel)
         TextButton(onClick = onGameSelection) {
             Text("Games")
         }

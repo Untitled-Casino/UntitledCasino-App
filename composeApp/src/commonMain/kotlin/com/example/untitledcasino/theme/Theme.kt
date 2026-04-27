@@ -8,6 +8,7 @@ private val CasinoColorScheme = darkColorScheme( // darker color scheme should u
     primary = CasinoRed,
     onPrimary = CasinoWhite,
     secondary = CasinoDarkRed,
+    onSecondary = CasinoWhite,
     background = CasinoBlack,
     onBackground = CasinoWhite,
     surface = CasinoGrey,

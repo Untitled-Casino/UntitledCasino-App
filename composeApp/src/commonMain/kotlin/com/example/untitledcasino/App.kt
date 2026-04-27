@@ -11,6 +11,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -30,6 +31,10 @@ fun App(
     database: CasinoDatabase,
 ) {
     val navController = rememberNavController()
+
+    val playerDao = database.getDao()
+    val casinoVM = remember { CasinoVM(playerDao) }
+
     UntitledCasinoTheme {
         Scaffold(
             containerColor = MaterialTheme.colorScheme.background,
@@ -49,14 +54,14 @@ fun App(
                     HomeScreen(
                         onGameSelection = { navController.navigate(GameSelectionScreen) },
                         onOpenCredits = { navController.navigate(CreditsScreen) },
-                        database = database,
+                        viewModel = casinoVM,
                     )
                 }
                 composable<GameSelectionScreen> {
-                    GameSelectionScreen()
+                    GameSelectionScreen(viewModel = casinoVM)
                 }
                 composable<CreditsScreen> {
-                    CreditsScreen()
+                    CreditsScreen(viewModel = casinoVM)
                 }
             }
         }

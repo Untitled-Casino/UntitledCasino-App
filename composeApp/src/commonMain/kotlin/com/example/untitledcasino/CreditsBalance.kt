@@ -1,0 +1,54 @@
+package com.example.untitledcasino
+
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
+import untitledcasino.composeapp.generated.resources.Res
+import untitledcasino.composeapp.generated.resources.arrow_back
+import untitledcasino.composeapp.generated.resources.balance
+import untitledcasino.composeapp.generated.resources.piggy_bank
+
+@Composable
+fun CreditBalance(vm: CasinoVM) {
+    val credits by vm.playerCredits.collectAsState()
+
+    Surface(
+        color = MaterialTheme.colorScheme.primary,
+        shape = RoundedCornerShape(16.dp),
+        modifier = Modifier.padding(8.dp)
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Icon(
+                painterResource(Res.drawable.piggy_bank),
+                contentDescription = stringResource(Res.string.balance),
+                modifier = Modifier.size(48.dp),
+                tint = androidx.compose.ui.graphics.Color.Unspecified
+            )
+            Spacer(modifier = Modifier.width(4.dp))
+            Text(
+                text = credits.toString(),
+                color = MaterialTheme.colorScheme.onPrimary,
+                fontWeight = FontWeight.Bold,
+            )
+            Spacer(modifier = Modifier.width(4.dp))
+        }
+    }
+}

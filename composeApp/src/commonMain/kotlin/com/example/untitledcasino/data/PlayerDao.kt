@@ -1,14 +1,19 @@
 package com.example.untitledcasino.data
 
 import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface PlayerDao {
-    @Query("SELECT credits FROM PlayerEntity")
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insertInitialPlayer(player: PlayerEntity): Long
+
+    @Query("SELECT credits FROM PlayerEntity WHERE id = 1")
     fun getPlayerCredits(): Flow<Int>
 
-    @Query("UPDATE PlayerEntity SET credits = :credits")
+    @Query("UPDATE PlayerEntity SET credits = :credits WHERE id = 1")
     suspend fun setPlayerCredits(credits: Int)
 }
