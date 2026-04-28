@@ -13,16 +13,14 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 import org.jetbrains.compose.resources.stringResource
 import untitledcasino.composeapp.generated.resources.Res
 import untitledcasino.composeapp.generated.resources.cancel
-import untitledcasino.composeapp.generated.resources.purchase_success
 
 @Serializable
 data class ConfirmRoute(
@@ -62,7 +60,10 @@ fun ConfirmScreen(
                     contentColor = MaterialTheme.colorScheme.onPrimary,
                 )
             ) {
-                Text(text = formatPrice(option.priceInCents))
+                Text(
+                    text = formatPrice(option.priceInCents),
+                    fontWeight = FontWeight.Bold,
+                )
             }
             Spacer(Modifier.width(16.dp))
             Button(
@@ -74,7 +75,10 @@ fun ConfirmScreen(
                     contentColor = MaterialTheme.colorScheme.onPrimary,
                 )
             ) {
-                Text(text = stringResource(Res.string.cancel))
+                Text(
+                    text = stringResource(Res.string.cancel),
+                    fontWeight = FontWeight.Bold,
+                )
             }
         }
     }

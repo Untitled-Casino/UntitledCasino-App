@@ -45,7 +45,7 @@ fun CreditBalance(
             )
             Spacer(modifier = Modifier.width(4.dp))
             Text(
-                text = credits.toString(),
+                text = formatWithCommas(credits ?: 0),
                 color = MaterialTheme.colorScheme.onPrimary,
                 fontWeight = FontWeight.Bold,
             )

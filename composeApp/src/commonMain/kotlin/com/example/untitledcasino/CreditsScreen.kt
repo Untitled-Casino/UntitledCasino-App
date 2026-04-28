@@ -1,8 +1,9 @@
 package com.example.untitledcasino
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -23,14 +24,15 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
+import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import untitledcasino.composeapp.generated.resources.Res
-import untitledcasino.composeapp.generated.resources.credit_pile
-import untitledcasino.composeapp.generated.resources.credits
+import untitledcasino.composeapp.generated.resources.*
 
 @Serializable
 data object CreditsRoute {
@@ -40,15 +42,16 @@ data object CreditsRoute {
 data class CreditPurchaseOption(
     val creditsReceive: Int,
     val priceInCents: Int,
+    val img: DrawableResource,
 )
 
 val creditPurchaseOptions = listOf(
-    CreditPurchaseOption(100, 149),
-    CreditPurchaseOption(500, 499),
-    CreditPurchaseOption(1000, 899),
-    CreditPurchaseOption(5000, 3999),
-    CreditPurchaseOption(10000, 7499),
-    CreditPurchaseOption(100000, 49999),
+    CreditPurchaseOption(100, 149, Res.drawable.credit_1),
+    CreditPurchaseOption(500, 499, Res.drawable.credit_2),
+    CreditPurchaseOption(1000, 899, Res.drawable.credit_3),
+    CreditPurchaseOption(5000, 3999, Res.drawable.credit_4),
+    CreditPurchaseOption(10000, 7499, Res.drawable.credit_5),
+    CreditPurchaseOption(100000, 49999, Res.drawable.credit_6),
 )
 val creditPurchaseOptionsMap = creditPurchaseOptions.associateBy { it.creditsReceive }
 
@@ -88,7 +91,7 @@ fun CreditsScreen(
             ) {
                 Text(
                     text = "${formatWithCommas(currentOption!!.creditsReceive)} Credits",
-                    color = MaterialTheme.colorScheme.onBackground
+                    color = MaterialTheme.colorScheme.onBackground,
                 )
                 Button(
                     onClick = {
@@ -99,7 +102,10 @@ fun CreditsScreen(
                         contentColor = MaterialTheme.colorScheme.onPrimary,
                     )
                 ) {
-                    Text("Purchase")
+                    Text(
+                        text = "Purchase",
+                        fontWeight = FontWeight.Bold,
+                    )
                 }
             }
         }
@@ -115,19 +121,22 @@ fun CreditPurchaseOptionItem(
         onClick = onClick,
         color = MaterialTheme.colorScheme.primary,
         shape = RoundedCornerShape(16.dp),
-        modifier = Modifier.padding(4.dp).fillMaxSize()
+        modifier = Modifier.padding(4.dp).aspectRatio(1f)
     ) {
         Column(
             modifier = Modifier.padding(8.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.SpaceEvenly
         ) {
             Text(
                 text = formatWithCommas(option.creditsReceive),
+                fontWeight = FontWeight.Bold,
             )
             Icon(
-                painterResource(Res.drawable.credit_pile),
+                painterResource(option.img),
                 contentDescription = stringResource(Res.string.credits),
                 tint = androidx.compose.ui.graphics.Color.Unspecified,
+                modifier = Modifier.weight(1f),
             )
             Text(
                 text = formatPrice(option.priceInCents),
