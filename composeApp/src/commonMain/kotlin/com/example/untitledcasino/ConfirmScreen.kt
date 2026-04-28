@@ -2,18 +2,27 @@ package com.example.untitledcasino
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
+import org.jetbrains.compose.resources.stringResource
+import untitledcasino.composeapp.generated.resources.Res
+import untitledcasino.composeapp.generated.resources.cancel
+import untitledcasino.composeapp.generated.resources.purchase_success
 
 @Serializable
 data class ConfirmRoute(
@@ -24,7 +33,8 @@ data class ConfirmRoute(
 @Composable
 fun ConfirmScreen(
     option: CreditPurchaseOption,
-    onConfirm: (creditsReceive: Int) -> Unit,
+    onSuccess: (creditsReceive: CreditPurchaseOption) -> Unit,
+    onFailure: () -> Unit,
     playerRepo: PlayerRepo,
 ) {
     Column(
@@ -32,21 +42,40 @@ fun ConfirmScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ) {
+        CreditBalance(playerRepo)
+        Spacer(Modifier.height(16.dp))
         Text(
             text = "Confirm purchase of ${formatWithCommas(option.creditsReceive)} credits?",
             color = MaterialTheme.colorScheme.onBackground,
         )
         Spacer(Modifier.weight(1f))
-        Button(
-            onClick = {
-                onConfirm(option.creditsReceive)
-            },
-            colors = ButtonDefaults.buttonColors(
-                containerColor = MaterialTheme.colorScheme.primary,
-                contentColor = MaterialTheme.colorScheme.onPrimary,
-            )
+        Row(
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Text(text = formatPrice(option.priceInCents))
+            Button(
+                onClick = {
+                    // HERE IS WHERE IN-APP PURCHASE WOULD HAPPEN
+                    onSuccess(option)
+                },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    contentColor = MaterialTheme.colorScheme.onPrimary,
+                )
+            ) {
+                Text(text = formatPrice(option.priceInCents))
+            }
+            Spacer(Modifier.width(16.dp))
+            Button(
+                onClick = {
+                    onFailure()
+                },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    contentColor = MaterialTheme.colorScheme.onPrimary,
+                )
+            ) {
+                Text(text = stringResource(Res.string.cancel))
+            }
         }
     }
 }

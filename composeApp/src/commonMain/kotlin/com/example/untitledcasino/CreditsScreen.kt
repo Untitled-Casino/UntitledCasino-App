@@ -81,7 +81,7 @@ fun CreditsScreen(
                 )
             }
         }
-
+        Spacer(Modifier.height(16.dp))
         currentOption?.let {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,

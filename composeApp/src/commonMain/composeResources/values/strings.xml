@@ -4,4 +4,7 @@
     <string name="back">Back</string>
     <string name="balance">Balance</string>
     <string name="credits">Credits</string>
+    <string name="cancel">Cancel</string>
+    <string name="purchase_success">Purchased %1$s credits for %2$s</string>
+    <string name="purchase_failed">Purchase failed</string>
 </resources>

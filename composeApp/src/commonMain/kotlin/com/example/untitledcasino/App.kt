@@ -6,6 +6,8 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -19,18 +21,24 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.example.untitledcasino.data.CasinoDatabase
 import com.example.untitledcasino.theme.UntitledCasinoTheme
+import kotlinx.coroutines.launch
+import org.jetbrains.compose.resources.getString
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import untitledcasino.composeapp.generated.resources.Res
 import untitledcasino.composeapp.generated.resources.app_name
 import untitledcasino.composeapp.generated.resources.arrow_back
 import untitledcasino.composeapp.generated.resources.back
+import untitledcasino.composeapp.generated.resources.purchase_failed
+import untitledcasino.composeapp.generated.resources.purchase_success
 
 @Composable
 fun App(
     database: CasinoDatabase,
 ) {
+    val snackbarHostState = remember { SnackbarHostState() }
     val navController = rememberNavController()
+    val scope = rememberCoroutineScope()
 
     val playerDao = database.getDao()
     val playerRepo = remember { PlayerRepo(playerDao) }
@@ -41,6 +49,7 @@ fun App(
 
     UntitledCasinoTheme {
         Scaffold(
+            snackbarHost = { SnackbarHost(snackbarHostState) },
             containerColor = MaterialTheme.colorScheme.background,
             topBar = {
                 val curBackStackEntry by navController.currentBackStackEntryAsState()
@@ -78,7 +87,34 @@ fun App(
 
                     ConfirmScreen(
                         option = option!!,
-                        onConfirm = { navController.navigate(HomeRoute) },
+                        onSuccess = { option ->
+                            scope.launch {
+                                playerRepo.addCredits(option.creditsReceive)
+
+                                val message = getString(
+                                    Res.string.purchase_success,
+                                    formatWithCommas(option.creditsReceive),
+                                    formatPrice(option.priceInCents),
+                                )
+
+                                navController.navigate(HomeRoute) {
+                                    popUpTo(HomeRoute) { inclusive = true }
+                                }
+
+                                snackbarHostState.showSnackbar(message)
+                            }
+                        },
+                        onFailure = {
+                            scope.launch {
+                                val message = getString(Res.string.purchase_failed)
+
+                                navController.navigate(HomeRoute) {
+                                    popUpTo(HomeRoute) { inclusive = true }
+                                }
+
+                                snackbarHostState.showSnackbar(message)
+                            }
+                        },
                         playerRepo = playerRepo,
                     )
                 }
