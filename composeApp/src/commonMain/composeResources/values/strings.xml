@@ -3,4 +3,5 @@
     <string name="app_name">Untitled Casino</string>
     <string name="back">Back</string>
     <string name="balance">Balance</string>
+    <string name="credits">Credits</string>
 </resources>

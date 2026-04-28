@@ -1,13 +1,9 @@
 package com.example.untitledcasino
 
-import androidx.lifecycle.viewModelScope
 import com.example.untitledcasino.data.PlayerDao
 import com.example.untitledcasino.data.PlayerEntity
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.stateIn
 
 const val INIT_CREDITS = 100
 

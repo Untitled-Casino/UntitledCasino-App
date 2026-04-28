@@ -20,7 +20,6 @@ import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import untitledcasino.composeapp.generated.resources.Res
-import untitledcasino.composeapp.generated.resources.arrow_back
 import untitledcasino.composeapp.generated.resources.balance
 import untitledcasino.composeapp.generated.resources.piggy_bank
 
