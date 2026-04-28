@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -18,9 +19,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import kotlinx.serialization.Serializable
+import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import untitledcasino.composeapp.generated.resources.Res
 import untitledcasino.composeapp.generated.resources.cancel
+import untitledcasino.composeapp.generated.resources.credits
 
 @Serializable
 data class ConfirmRoute(
@@ -46,7 +49,12 @@ fun ConfirmScreen(
             text = "Confirm purchase of ${formatWithCommas(option.creditsReceive)} credits?",
             color = MaterialTheme.colorScheme.onBackground,
         )
-        Spacer(Modifier.weight(1f))
+        Icon(
+            painterResource(option.img),
+            contentDescription = stringResource(Res.string.credits),
+            tint = androidx.compose.ui.graphics.Color.Unspecified,
+            modifier = Modifier.weight(1f),
+        )
         Row(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
