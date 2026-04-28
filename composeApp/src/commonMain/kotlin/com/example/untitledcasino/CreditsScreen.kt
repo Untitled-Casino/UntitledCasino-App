@@ -11,7 +11,7 @@ data object CreditsScreen {
 
 @Composable
 fun CreditsScreen(
-    viewModel: CasinoVM,
+    playerRepo: PlayerRepo,
 ) {
     Text("Credits Screen")
 }

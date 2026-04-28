@@ -33,7 +33,11 @@ fun App(
     val navController = rememberNavController()
 
     val playerDao = database.getDao()
-    val casinoVM = remember { CasinoVM(playerDao) }
+    val playerRepo = remember { PlayerRepo(playerDao) }
+
+    LaunchedEffect(Unit) {
+        playerRepo.initializePlayerIfNeeded()
+    }
 
     UntitledCasinoTheme {
         Scaffold(
@@ -54,14 +58,14 @@ fun App(
                     HomeScreen(
                         onGameSelection = { navController.navigate(GameSelectionScreen) },
                         onOpenCredits = { navController.navigate(CreditsScreen) },
-                        viewModel = casinoVM,
+                        playerRepo = playerRepo,
                     )
                 }
                 composable<GameSelectionScreen> {
-                    GameSelectionScreen(viewModel = casinoVM)
+                    GameSelectionScreen(playerRepo = playerRepo)
                 }
                 composable<CreditsScreen> {
-                    CreditsScreen(viewModel = casinoVM)
+                    CreditsScreen(playerRepo = playerRepo)
                 }
             }
         }

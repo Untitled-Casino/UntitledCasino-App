@@ -25,8 +25,10 @@ import untitledcasino.composeapp.generated.resources.balance
 import untitledcasino.composeapp.generated.resources.piggy_bank
 
 @Composable
-fun CreditBalance(vm: CasinoVM) {
-    val credits by vm.playerCredits.collectAsState()
+fun CreditBalance(
+    playerRepo: PlayerRepo
+) {
+    val credits by playerRepo.credits.collectAsState(0)
 
     Surface(
         color = MaterialTheme.colorScheme.primary,

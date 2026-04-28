@@ -26,13 +26,13 @@ data object HomeScreen {
 fun HomeScreen(
     onGameSelection: () -> Unit,
     onOpenCredits: () -> Unit,
-    viewModel: CasinoVM,
+    playerRepo: PlayerRepo,
 ) {
     Column(
         modifier = Modifier.safeContentPadding().fillMaxSize().padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        CreditBalance(viewModel)
+        CreditBalance(playerRepo)
         TextButton(onClick = onGameSelection) {
             Text("Games")
         }

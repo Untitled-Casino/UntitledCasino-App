@@ -11,7 +11,7 @@ data object GameSelectionScreen {
 
 @Composable
 fun GameSelectionScreen(
-    viewModel: CasinoVM,
+    playerRepo: PlayerRepo,
 ) {
     Text("Game Selection Screen")
 }
