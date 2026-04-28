@@ -11,12 +11,12 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
 import com.example.untitledcasino.data.CasinoDatabase
 import com.example.untitledcasino.theme.UntitledCasinoTheme
 import org.jetbrains.compose.resources.painterResource
@@ -45,27 +45,42 @@ fun App(
             topBar = {
                 val curBackStackEntry by navController.currentBackStackEntryAsState()
                 val curDestination = curBackStackEntry?.destination
-                val onHomeScreen = curDestination?.hasRoute<HomeScreen>() == true
+                val onHomeScreen = curDestination?.hasRoute<HomeRoute>() == true
                 TopBar(back = if (onHomeScreen) null else ({ navController.navigateUp() }))
             }
         ) { innerPadding ->
             NavHost(
                 navController = navController,
-                startDestination = HomeScreen,
+                startDestination = HomeRoute,
                 modifier = Modifier.padding(innerPadding)
             ) {
-                composable<HomeScreen> {
+                composable<HomeRoute> {
                     HomeScreen(
-                        onGameSelection = { navController.navigate(GameSelectionScreen) },
-                        onOpenCredits = { navController.navigate(CreditsScreen) },
+                        onGameSelection = { navController.navigate(GameSelectionRoute) },
+                        onOpenCredits = { navController.navigate(CreditsRoute) },
                         playerRepo = playerRepo,
                     )
                 }
-                composable<GameSelectionScreen> {
+                composable<GameSelectionRoute> {
                     GameSelectionScreen(playerRepo = playerRepo)
                 }
-                composable<CreditsScreen> {
-                    CreditsScreen(playerRepo = playerRepo)
+                composable<CreditsRoute> {
+                    CreditsScreen(
+                        onPurchase = { selectedOption ->
+                            navController.navigate(ConfirmRoute(selectedOption.creditsReceive))
+                        },
+                        playerRepo = playerRepo
+                    )
+                }
+                composable<ConfirmRoute> { navBackStackEntry ->
+                    val route = navBackStackEntry.toRoute<ConfirmRoute>()
+                    val option = creditPurchaseOptionsMap[route.creditsReceive]
+
+                    ConfirmScreen(
+                        option = option!!,
+                        onConfirm = { navController.navigate(HomeRoute) },
+                        playerRepo = playerRepo,
+                    )
                 }
             }
         }

@@ -9,12 +9,18 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -27,17 +33,14 @@ import untitledcasino.composeapp.generated.resources.credit_pile
 import untitledcasino.composeapp.generated.resources.credits
 
 @Serializable
-data object CreditsScreen {
+data object CreditsRoute {
 
 }
 
 data class CreditPurchaseOption(
     val creditsReceive: Int,
     val priceInCents: Int,
-) {
-    val stringPrice = priceInCents.toString().padStart(3,'0')
-    val displayPrice: String = "$${stringPrice.dropLast(2)}.${stringPrice.takeLast(2)}"
-}
+)
 
 val creditPurchaseOptions = listOf(
     CreditPurchaseOption(100, 149),
@@ -47,12 +50,16 @@ val creditPurchaseOptions = listOf(
     CreditPurchaseOption(10000, 7499),
     CreditPurchaseOption(100000, 49999),
 )
+val creditPurchaseOptionsMap = creditPurchaseOptions.associateBy { it.creditsReceive }
 
 @Composable
 fun CreditsScreen(
+    onPurchase: (option: CreditPurchaseOption) -> Unit,
     playerRepo: PlayerRepo,
 ) {
+    var currentOption by remember { mutableStateOf<CreditPurchaseOption?>(null) }
     val scope = rememberCoroutineScope()
+
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.padding(16.dp),
@@ -61,16 +68,39 @@ fun CreditsScreen(
         Spacer(Modifier.height(16.dp))
         LazyVerticalGrid(
             columns = GridCells.Fixed(3),
+            modifier = Modifier.weight(1f)
         ) {
             items(creditPurchaseOptions) { option ->
                 CreditPurchaseOptionItem(
                     option = option,
                     onClick = {
                         scope.launch {
-                            playerRepo.addCredits(option.creditsReceive)
+                            currentOption = option
                         }
                     }
                 )
+            }
+        }
+
+        currentOption?.let {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                Text(
+                    text = "${formatWithCommas(currentOption!!.creditsReceive)} Credits",
+                    color = MaterialTheme.colorScheme.onBackground
+                )
+                Button(
+                    onClick = {
+                        onPurchase(currentOption!!)
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        contentColor = MaterialTheme.colorScheme.onPrimary,
+                    )
+                ) {
+                    Text("Purchase")
+                }
             }
         }
     }
@@ -92,7 +122,7 @@ fun CreditPurchaseOptionItem(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Text(
-                text = option.creditsReceive.toString(),
+                text = formatWithCommas(option.creditsReceive),
             )
             Icon(
                 painterResource(Res.drawable.credit_pile),
@@ -100,7 +130,7 @@ fun CreditPurchaseOptionItem(
                 tint = androidx.compose.ui.graphics.Color.Unspecified,
             )
             Text(
-                text = option.displayPrice,
+                text = formatPrice(option.priceInCents),
             )
         }
     }
