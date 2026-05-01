@@ -20,6 +20,11 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.example.untitledcasino.data.CasinoDatabase
+import com.example.untitledcasino.game.GameContent
+import com.example.untitledcasino.game.GameScreen
+import com.example.untitledcasino.game.GameScreenRoute
+import com.example.untitledcasino.game.GameSelectionRoute
+import com.example.untitledcasino.game.GameSelectionScreen
 import com.example.untitledcasino.theme.UntitledCasinoTheme
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.getString
@@ -71,7 +76,20 @@ fun App(
                     )
                 }
                 composable<GameSelectionRoute> {
-                    GameSelectionScreen(playerRepo = playerRepo)
+                    GameSelectionScreen(
+                        playerRepo = playerRepo,
+                        onStartGame = { navController.navigate(GameScreenRoute) }
+                    )
+                }
+                composable<GameScreenRoute> {
+                    //gameContent placeholder
+                    val gameContent = GameContent(
+                        title = "TheBestGameEver",
+                        viewModel = null,
+                        visuals = { Text("visuals") },
+                        controls = {Text("controls")}
+                    )
+                    GameScreen(gameContent, playerRepo)
                 }
                 composable<CreditsRoute> {
                     CreditsScreen(

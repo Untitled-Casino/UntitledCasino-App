@@ -7,4 +7,6 @@
     <string name="cancel">Cancel</string>
     <string name="purchase_success">Purchased %1$s credits for %2$s</string>
     <string name="purchase_failed">Purchase failed</string>
+    <string name="coin_flip_title">Coin Flip</string>
+    <string name="hi_lo_title">Hi-Lo</string>
 </resources>

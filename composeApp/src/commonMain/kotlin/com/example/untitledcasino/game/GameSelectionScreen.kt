@@ -1,0 +1,41 @@
+package com.example.untitledcasino.game
+
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import com.example.untitledcasino.PlayerRepo
+import kotlinx.serialization.Serializable
+import org.jetbrains.compose.resources.stringResource
+import untitledcasino.composeapp.generated.resources.Res
+import untitledcasino.composeapp.generated.resources.coin_flip_title
+import untitledcasino.composeapp.generated.resources.hi_lo_title
+
+@Serializable
+data object GameSelectionRoute {
+
+}
+
+@Composable
+fun GameSelectionScreen(
+    playerRepo: PlayerRepo,
+    onStartGame: () -> Unit,
+) {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(all = 16.dp),
+    ) {
+        Text(text = "Game Selection Screen",)
+        Button(onClick = onStartGame) { Text(stringResource(Res.string.coin_flip_title)) }
+        Button(onClick = onStartGame) { Text(stringResource(Res.string.hi_lo_title))}
+    }
+}
