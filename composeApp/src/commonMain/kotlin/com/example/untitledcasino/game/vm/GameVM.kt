@@ -12,7 +12,7 @@ abstract class GameVM : ViewModel() {
     protected var playerRepo: PlayerRepo? = null
 
     // State for the UI to observe
-    var betAmount by mutableStateOf("0")
+    var betAmount by mutableStateOf(0)
     var isGameInProgress by mutableStateOf(false)
         protected set
 
@@ -23,7 +23,7 @@ abstract class GameVM : ViewModel() {
     }
 
     protected fun attemptStartGame(onSuccess: () -> Unit) {
-        val amount = betAmount.toIntOrNull() ?: 0
+        val amount = betAmount
         isGameInProgress = true
         onSuccess()
 

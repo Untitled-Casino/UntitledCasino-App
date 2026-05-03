@@ -94,7 +94,7 @@ fun App(
                         visuals = { CoinFlipVisuals(vm = vm) },
                         controls = { CoinFlipControls(vm = vm) }
                     )
-                    GameScreen(gameContent, playerRepo)
+                    GameScreen(gameContent, vm)
                 }
                 composable<CreditsRoute> {
                     CreditsScreen(

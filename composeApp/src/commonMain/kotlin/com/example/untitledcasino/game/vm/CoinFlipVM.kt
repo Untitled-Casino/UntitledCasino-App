@@ -7,7 +7,6 @@ import androidx.compose.runtime.setValue
 class CoinFlipVM : GameVM() {
     var sideSelection by mutableStateOf("")
     var lastResult by mutableStateOf("None")
-
     var won by mutableStateOf<Boolean?>(null)
 
     fun select(userChoice: String) {
@@ -19,19 +18,20 @@ class CoinFlipVM : GameVM() {
 
         attemptStartGame {
             val result = if ((0..1).random() == 0) "H" else "T"
-            won = (sideSelection == result)
-
-            //had to do this because of null check :(
-            if (won == true) {
-                val bet = betAmount.toIntOrNull() ?: 0
-                grantWinnings(bet * 2)
-            } else {
-                endRound()
-            }
-
-            sideSelection = ""
             lastResult = result
+            won = (sideSelection == result)
         }
+    }
+
+    fun onAnimationFinished() {
+        //had to do this because of null check :(
+        if (won == true) {
+            val bet = betAmount
+            grantWinnings(bet * 2)
+        } else {
+            endRound()
+        }
+        sideSelection = ""
     }
 
 
