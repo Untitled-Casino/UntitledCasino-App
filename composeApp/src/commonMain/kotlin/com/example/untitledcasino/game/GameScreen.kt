@@ -12,6 +12,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import com.example.untitledcasino.PlayerRepo
+import com.example.untitledcasino.game.vm.GameVM
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -30,16 +31,16 @@ fun GameScreen(gameContent: GameContent, playerRepo: PlayerRepo) {
         }
         Column() {
             gameContent.controls()
-            BetInput(onBetChange = { })
+            BetInput(vm = gameContent.viewModel)
         }
     }
 }
 
 @Composable
-fun BetInput(onBetChange: () -> Unit) {
+fun BetInput(vm: GameVM) {
     val bet by remember { mutableStateOf(0) }
     Row() {
-        Text("Bet Amount:")
-        Text("textfield being stupid")
+        Text("Bet Amount: ${vm.betAmount}")
+
     }
 }

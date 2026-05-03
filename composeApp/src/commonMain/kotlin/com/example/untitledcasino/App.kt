@@ -13,6 +13,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -20,11 +21,14 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.example.untitledcasino.data.CasinoDatabase
+import com.example.untitledcasino.game.CoinFlipControls
+import com.example.untitledcasino.game.CoinFlipVisuals
 import com.example.untitledcasino.game.GameContent
 import com.example.untitledcasino.game.GameScreen
 import com.example.untitledcasino.game.GameScreenRoute
 import com.example.untitledcasino.game.GameSelectionRoute
 import com.example.untitledcasino.game.GameSelectionScreen
+import com.example.untitledcasino.game.vm.CoinFlipVM
 import com.example.untitledcasino.theme.UntitledCasinoTheme
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.getString
@@ -83,11 +87,12 @@ fun App(
                 }
                 composable<GameScreenRoute> {
                     //gameContent placeholder
+                    val vm = CoinFlipVM()
                     val gameContent = GameContent(
-                        title = "TheBestGameEver",
-                        viewModel = null,
-                        visuals = { Text("visuals") },
-                        controls = {Text("controls")}
+                        title = "CoinFlip",
+                        viewModel = vm,
+                        visuals = { CoinFlipVisuals(vm = vm) },
+                        controls = { CoinFlipControls(vm = vm) }
                     )
                     GameScreen(gameContent, playerRepo)
                 }

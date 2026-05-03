@@ -2,10 +2,11 @@ package com.example.untitledcasino.game
 
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.ViewModel
+import com.example.untitledcasino.game.vm.GameVM
 
 data class GameContent (
     val title: String,
-    val viewModel: ViewModel?,
+    val viewModel: GameVM,
     val visuals: @Composable (() -> Unit),
     val controls: @Composable (() -> Unit),
     )
