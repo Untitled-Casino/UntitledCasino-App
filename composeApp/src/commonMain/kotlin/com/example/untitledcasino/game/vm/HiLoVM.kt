@@ -1,47 +1,66 @@
 package com.example.untitledcasino.game.vm
 
-import kotlin.math.ceil
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 
 class HiLoVM : GameVM() {
-    var currentCard by mutableStateOf(7)
+    var currentCard by mutableStateOf<Int?>(null)
+    var nextCard by mutableStateOf<Int?>(null)
+
+    var roundWon by mutableStateOf(false)
     var potentialWinnings by mutableStateOf(0)
     var isStreakActive by mutableStateOf(false)
+    var gameWon by mutableStateOf(false)
     var round by mutableStateOf(0)
+
     val maxRound = 4
 
     fun startHiLo() {
         attemptStartGame {
             isStreakActive = true
-            potentialWinnings = betAmount.toInt()
+            gameWon = false
+            potentialWinnings = betAmount
+            round = 0
+            currentCard = (1..13).random()
+            nextCard = null
+            finishProcessing()
         }
     }
 
     fun makeGuess(higher: Boolean) {
-        val nextCard = (1..13).random()
-        val won = if (higher) nextCard >= currentCard else nextCard <= currentCard
+        val current = currentCard ?: return
+        if (isBusy || !isStreakActive) return
 
-        currentCard = nextCard
+        val drawn = (1..13).random()
+        roundWon = if (higher) drawn > current else drawn <= current
 
-        if (won) {
-            potentialWinnings = ceil(potentialWinnings * 1.2).toInt()
+        nextCard = drawn
+    }
 
+    fun completeTurn() {
+        if (roundWon) {
+            potentialWinnings = (potentialWinnings * 1.2).toInt()
             if (round >= maxRound) {
                 cashOut()
             } else {
                 round++
+                currentCard = nextCard
+                nextCard = null
+                finishProcessing()
             }
         } else {
+            gameWon = false
             isStreakActive = false
-            round = 0
-            endRound()
+            currentCard = null
+            nextCard = null
+            finishProcessing()
         }
     }
 
     fun cashOut() {
-        grantWinnings(potentialWinnings)
+        gameWon = true
         isStreakActive = false
+        grantWinnings(potentialWinnings)
     }
 }

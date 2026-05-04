@@ -13,7 +13,7 @@ abstract class GameVM : ViewModel() {
 
     // State for the UI to observe
     var betAmount by mutableStateOf(0)
-    var isGameInProgress by mutableStateOf(false)
+    var isBusy by mutableStateOf(false)
         protected set
 
     var uiMessage by mutableStateOf("")
@@ -24,7 +24,7 @@ abstract class GameVM : ViewModel() {
 
     protected fun attemptStartGame(onSuccess: () -> Unit) {
         val amount = betAmount
-        isGameInProgress = true
+        isBusy = true
         onSuccess()
 
         /*
@@ -51,11 +51,11 @@ abstract class GameVM : ViewModel() {
     protected fun grantWinnings(amount: Int) {
         viewModelScope.launch {
             playerRepo?.addCredits(amount)
-            isGameInProgress = false
+            isBusy = false
         }
     }
 
-    protected fun endRound() {
-        isGameInProgress = false
+    protected fun finishProcessing() {
+        isBusy = false
     }
 }

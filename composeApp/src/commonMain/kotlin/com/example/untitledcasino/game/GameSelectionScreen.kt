@@ -25,7 +25,7 @@ data object GameSelectionRoute {
 @Composable
 fun GameSelectionScreen(
     playerRepo: PlayerRepo,
-    onStartGame: () -> Unit,
+    onStartGame: (String) -> Unit,
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -35,7 +35,7 @@ fun GameSelectionScreen(
             .padding(all = 16.dp),
     ) {
         Text(text = "Game Selection Screen",)
-        Button(onClick = onStartGame) { Text(stringResource(Res.string.coin_flip_title)) }
-        Button(onClick = onStartGame) { Text(stringResource(Res.string.hi_lo_title))}
+        Button(onClick = { onStartGame("coinflip") }) { Text(stringResource(Res.string.coin_flip_title)) }
+        Button(onClick = { onStartGame("hilo") }) { Text(stringResource(Res.string.hi_lo_title))}
     }
 }

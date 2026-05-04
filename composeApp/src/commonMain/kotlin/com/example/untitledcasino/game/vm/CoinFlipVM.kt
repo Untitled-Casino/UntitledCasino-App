@@ -29,7 +29,7 @@ class CoinFlipVM : GameVM() {
             val bet = betAmount
             grantWinnings(bet * 2)
         } else {
-            endRound()
+            finishProcessing()
         }
         sideSelection = ""
     }

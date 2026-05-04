@@ -28,7 +28,10 @@ import com.example.untitledcasino.game.GameScreen
 import com.example.untitledcasino.game.GameScreenRoute
 import com.example.untitledcasino.game.GameSelectionRoute
 import com.example.untitledcasino.game.GameSelectionScreen
+import com.example.untitledcasino.game.HiLoControls
+import com.example.untitledcasino.game.HiLoVisuals
 import com.example.untitledcasino.game.vm.CoinFlipVM
+import com.example.untitledcasino.game.vm.HiLoVM
 import com.example.untitledcasino.theme.UntitledCasinoTheme
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.getString
@@ -38,6 +41,8 @@ import untitledcasino.composeapp.generated.resources.Res
 import untitledcasino.composeapp.generated.resources.app_name
 import untitledcasino.composeapp.generated.resources.arrow_back
 import untitledcasino.composeapp.generated.resources.back
+import untitledcasino.composeapp.generated.resources.coin_flip_title
+import untitledcasino.composeapp.generated.resources.hi_lo_title
 import untitledcasino.composeapp.generated.resources.purchase_failed
 import untitledcasino.composeapp.generated.resources.purchase_success
 
@@ -82,18 +87,34 @@ fun App(
                 composable<GameSelectionRoute> {
                     GameSelectionScreen(
                         playerRepo = playerRepo,
-                        onStartGame = { navController.navigate(GameScreenRoute) }
+                        onStartGame = { selectedType -> navController.navigate(GameScreenRoute(gameType = selectedType)) }
                     )
                 }
-                composable<GameScreenRoute> {
-                    //gameContent placeholder
-                    val vm = CoinFlipVM()
-                    val gameContent = GameContent(
-                        title = "CoinFlip",
-                        viewModel = vm,
-                        visuals = { CoinFlipVisuals(vm = vm) },
-                        controls = { CoinFlipControls(vm = vm) }
-                    )
+                composable<GameScreenRoute> { navBackStackEntry ->
+                    val game = navBackStackEntry.toRoute<GameScreenRoute>()
+
+                    val (vm, gameContent) = when (game.gameType) {
+                        "coinflip" -> {
+                            val specificVm = CoinFlipVM()
+                            specificVm to GameContent(
+                                title = stringResource(Res.string.coin_flip_title),
+                                viewModel = specificVm,
+                                visuals = { CoinFlipVisuals(specificVm) },
+                                controls = { CoinFlipControls(specificVm) }
+                            )
+                        }
+                        "hilo" -> {
+                            val specificVm = HiLoVM()
+                            specificVm to GameContent(
+                                title = stringResource(Res.string.hi_lo_title),
+                                viewModel = specificVm,
+                                visuals = { HiLoVisuals(specificVm) },
+                                controls = { HiLoControls(specificVm) }
+                            )
+                        }
+                        else -> TODO("Unsupported game type")
+                    }
+
                     GameScreen(gameContent, vm)
                 }
                 composable<CreditsRoute> {

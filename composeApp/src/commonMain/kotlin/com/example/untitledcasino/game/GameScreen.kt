@@ -25,9 +25,9 @@ import com.example.untitledcasino.game.vm.GameVM
 import kotlinx.serialization.Serializable
 
 @Serializable
-data object GameScreenRoute {
-
-}
+data class GameScreenRoute (
+    val gameType: String
+)
 
 @Composable
 fun GameScreen(gameContent: GameContent, vm: GameVM) {

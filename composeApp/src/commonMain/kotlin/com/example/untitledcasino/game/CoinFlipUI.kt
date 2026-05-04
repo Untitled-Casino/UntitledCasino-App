@@ -52,14 +52,14 @@ fun CoinFlipControls(vm: CoinFlipVM) {
             ChoiceBox(
                 text = "Heads",
                 isDimmed = vm.sideSelection == "T",
-                isEnabled = !vm.isGameInProgress,
+                isEnabled = !vm.isBusy,
                 modifier = Modifier.weight(1f), // Each takes half width
                 onClick = { vm.select("H") }
             )
             ChoiceBox(
                 text = "Tails",
                 isDimmed = vm.sideSelection == "H",
-                isEnabled = !vm.isGameInProgress,
+                isEnabled = !vm.isBusy,
                 modifier = Modifier.weight(1f), // Each takes half width
                 onClick = { vm.select("T") }
             )
@@ -69,7 +69,7 @@ fun CoinFlipControls(vm: CoinFlipVM) {
         ChoiceBox(
             text = "PLAY",
             isDimmed = false,
-            isEnabled = !vm.isGameInProgress && vm.sideSelection.isNotEmpty(),
+            isEnabled = !vm.isBusy && vm.sideSelection.isNotEmpty(),
             modifier = Modifier.fillMaxWidth(), // Takes full width of the row above
             baseContainerColor = Color(0xFF0c9631), // Distinct color for Play
             onClick = { vm.flip() }
@@ -97,7 +97,6 @@ fun ChoiceBox(
                 },
                 shape = RectangleShape // This makes it a sharp box
             )
-            //.border(2.dp, Color.Black, RectangleShape)
             .clickable(enabled = isEnabled) { onClick() },
         contentAlignment = Alignment.Center
     ) {
@@ -119,8 +118,8 @@ fun CoinFlipVisuals(vm: CoinFlipVM) {
     var hasWonState by remember { mutableStateOf<Boolean?>(null)}
 
     // Trigger animation when the result changes
-    LaunchedEffect(vm.isGameInProgress) {
-        if (vm.isGameInProgress) {
+    LaunchedEffect(vm.isBusy) {
+        if (vm.isBusy) {
             showResultOverlay = false
 
             val targetSideAngle = if (vm.lastResult == "T") 180f else 0f
