@@ -33,6 +33,8 @@ import com.example.untitledcasino.game.HiLoVisuals
 import com.example.untitledcasino.game.vm.CoinFlipVM
 import com.example.untitledcasino.game.vm.HiLoVM
 import com.example.untitledcasino.theme.UntitledCasinoTheme
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.IO
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.getString
 import org.jetbrains.compose.resources.painterResource
@@ -58,7 +60,9 @@ fun App(
     val playerRepo = remember { PlayerRepo(playerDao) }
 
     LaunchedEffect(Unit) {
-        playerRepo.initializePlayerIfNeeded()
+        scope.launch(Dispatchers.IO) {
+            playerRepo.initializePlayerIfNeeded()
+        }
     }
 
     UntitledCasinoTheme {
@@ -96,6 +100,7 @@ fun App(
                     val (vm, gameContent) = when (game.gameType) {
                         "coinflip" -> {
                             val specificVm = CoinFlipVM()
+                            specificVm.setup(playerRepo)
                             specificVm to GameContent(
                                 title = stringResource(Res.string.coin_flip_title),
                                 viewModel = specificVm,
@@ -105,6 +110,7 @@ fun App(
                         }
                         "hilo" -> {
                             val specificVm = HiLoVM()
+                            specificVm.setup(playerRepo)
                             specificVm to GameContent(
                                 title = stringResource(Res.string.hi_lo_title),
                                 viewModel = specificVm,
@@ -115,7 +121,7 @@ fun App(
                         else -> TODO("Unsupported game type")
                     }
 
-                    GameScreen(gameContent, vm)
+                    GameScreen(playerRepo,gameContent, vm)
                 }
                 composable<CreditsRoute> {
                     CreditsScreen(

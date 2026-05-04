@@ -27,7 +27,6 @@ abstract class GameVM : ViewModel() {
         isBusy = true
         onSuccess()
 
-        /*
         if (amount <= 0) {
             uiMessage = "Please enter a valid bet."
             return
@@ -38,14 +37,12 @@ abstract class GameVM : ViewModel() {
 
             if (success) {
                 uiMessage = ""
-                isGameInProgress = true
+                isBusy = true
                 onSuccess()
             } else {
                 uiMessage = "Insufficient credits!"
             }
         }
-
-         */
     }
 
     protected fun grantWinnings(amount: Int) {
