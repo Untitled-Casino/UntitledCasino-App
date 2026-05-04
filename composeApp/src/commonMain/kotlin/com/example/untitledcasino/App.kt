@@ -139,7 +139,7 @@ fun App(
                         option = option!!,
                         onSuccess = { option ->
                             scope.launch {
-                                playerRepo.addCredits(option.creditsReceive)
+                                playerRepo.recordPurchase(option)
 
                                 val message = getString(
                                     Res.string.purchase_success,

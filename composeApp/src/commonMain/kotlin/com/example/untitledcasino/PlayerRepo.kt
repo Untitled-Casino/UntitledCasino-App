@@ -2,12 +2,14 @@ package com.example.untitledcasino
 
 import com.example.untitledcasino.data.PlayerDao
 import com.example.untitledcasino.data.PlayerEntity
+import com.example.untitledcasino.data.PurchaseEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.withContext
+import kotlin.time.Clock
 
 const val INIT_CREDITS = 100
 
@@ -39,5 +41,20 @@ class PlayerRepo(private val playerDao: PlayerDao) {
             return true
         }
         return false
+    }
+
+    suspend fun recordPurchase(option: CreditPurchaseOption) {
+        val currentBalance = playerDao.getPlayerCredits().first() ?: 0
+        val newBalance = currentBalance + option.creditsReceive
+        playerDao.setPlayerCredits(newBalance)
+
+        playerDao.insertPurchase(
+            PurchaseEntity(
+                credits = option.creditsReceive,
+                priceInCents = option.priceInCents,
+                timestamp = currentTimeMillis(),
+            )
+        )
+
     }
 }

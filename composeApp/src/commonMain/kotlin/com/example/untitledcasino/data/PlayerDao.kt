@@ -16,4 +16,10 @@ interface PlayerDao {
 
     @Query("UPDATE PlayerEntity SET credits = :credits WHERE id = 1")
     suspend fun setPlayerCredits(credits: Int)
+
+    @Insert
+    suspend fun insertPurchase(purchase: PurchaseEntity): Long
+
+    @Query("SELECT * FROM PurchaseEntity WHERE playerId = 1 ORDER BY timestamp DESC")
+    fun getPurchaseHistory(): Flow<List<PurchaseEntity>>
 }
