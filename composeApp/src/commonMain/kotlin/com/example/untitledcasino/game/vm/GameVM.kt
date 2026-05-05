@@ -36,6 +36,10 @@ abstract class GameVM(
     }
 
     protected fun attemptStartGame(onSuccess: () -> Unit) {
+        isBusy = true
+        onSuccess()
+
+        /*
         if (betAmount <= 0) {
             uiMessage = "Please enter a valid bet."
             return
@@ -53,6 +57,8 @@ abstract class GameVM(
                 isBusy = false
             }
         }
+
+         */
     }
 
     protected fun grantWinnings(amount: Int) {
