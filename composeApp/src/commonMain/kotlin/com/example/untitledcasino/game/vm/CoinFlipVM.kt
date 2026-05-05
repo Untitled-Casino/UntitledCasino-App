@@ -34,6 +34,7 @@ class CoinFlipVM(
             val bet = betAmount
             grantWinnings(bet * 2)
         } else {
+            grantWinnings(0)
             finishProcessing()
         }
         sideSelection = ""

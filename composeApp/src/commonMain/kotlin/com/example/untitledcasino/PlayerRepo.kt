@@ -22,9 +22,15 @@ class PlayerRepo(private val playerDao: PlayerDao) {
 
     suspend fun initializePlayerIfNeeded() {
         withContext(Dispatchers.IO) {
-            val current = playerDao.getPlayerCredits().firstOrNull()
-            if (current == null) {
-                playerDao.insertInitialPlayer(PlayerEntity(id = 1, credits = 1000))
+            val currentCredits = playerDao.getPlayerCredits().firstOrNull()
+
+            if (currentCredits == null) {
+                val rowsInserted = playerDao.insertInitialPlayer(
+                    PlayerEntity(id = 1, credits = 1000)
+                )
+                println("First run: Created player with ID: $rowsInserted")
+            } else {
+                println("Player already exists with $currentCredits credits")
             }
         }
     }
@@ -34,7 +40,9 @@ class PlayerRepo(private val playerDao: PlayerDao) {
     }
 
     suspend fun addCredits(newCredits: Int) {
-        playerDao.setPlayerCredits((credits.first() ?: 0) + newCredits)
+        val currentBalance = credits.first() ?: 0
+        val newBalance = currentBalance + newCredits
+        val rowsAffected = playerDao.setPlayerCredits(newBalance)
     }
 
     suspend fun tryCharge(cost: Int): Boolean {
@@ -48,27 +56,31 @@ class PlayerRepo(private val playerDao: PlayerDao) {
     }
 
     suspend fun recordPurchase(option: CreditPurchaseOption) {
-        addCredits(option.creditsReceive)
+        withContext(Dispatchers.IO) {
+            addCredits(option.creditsReceive)
 
-        playerDao.insertPurchase(
-            PurchaseEntity(
-                credits = option.creditsReceive,
-                priceInCents = option.priceInCents,
-                timestamp = currentTimeMillis(),
+            playerDao.insertPurchase(
+                PurchaseEntity(
+                    credits = option.creditsReceive,
+                    priceInCents = option.priceInCents,
+                    timestamp = currentTimeMillis(),
+                )
             )
-        )
+        }
     }
 
     suspend fun recordGameplay(gameName: String, bet: Int, reward: Int) {
-        addCredits(reward)
+        withContext(Dispatchers.IO) {
+            addCredits(reward)
 
-        playerDao.insertGameplay(
-            GameplayEntity(
-                gameName = gameName,
-                bet = bet,
-                reward = reward,
-                timestamp = currentTimeMillis(),
+            playerDao.insertGameplay(
+                GameplayEntity(
+                    gameName = gameName,
+                    bet = bet,
+                    reward = reward,
+                    timestamp = currentTimeMillis(),
+                )
             )
-        )
+        }
     }
 }

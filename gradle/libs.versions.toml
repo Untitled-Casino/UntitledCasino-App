@@ -19,6 +19,7 @@ kotlinxSerializationJson = "1.10.0" # ** ADDED for Navigation **
 room = "2.8.4" # ** ADDED for Room (Database) **
 sqlite = "2.6.2" # ** ADDED for Room (Database) **
 ksp = "2.3.6" # ** ADDED for Room (Database) **
+ktor = "3.4.3"  # ** ADDED for Ktor **
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -44,6 +45,10 @@ kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.
 androidx-sqlite-bundled = { module = "androidx.sqlite:sqlite-bundled", version.ref = "sqlite" } # ** ADDED for Room (Database) **
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" } # ** ADDED for Room (Database) **
 androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" } # ** ADDED for Room (Database) **
+ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" } # ** ADDED for Ktor **
+ktor-client-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktor" } # ** ADDED for Ktor **
+ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" } # ** ADDED for Ktor **
+ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" } # ** ADDED for Ktor **
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

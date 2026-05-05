@@ -56,6 +56,7 @@ class HiLoVM(
             isStreakActive = false
             currentCard = null
             nextCard = null
+            grantWinnings(0)
             finishProcessing()
         }
     }

@@ -23,6 +23,8 @@ import androidx.navigation.toRoute
 import com.example.untitledcasino.data.CasinoDatabase
 import com.example.untitledcasino.game.CoinFlipControls
 import com.example.untitledcasino.game.CoinFlipVisuals
+import com.example.untitledcasino.game.DailyNumberControls
+import com.example.untitledcasino.game.DailyNumberVisuals
 import com.example.untitledcasino.game.GameContent
 import com.example.untitledcasino.game.GameScreen
 import com.example.untitledcasino.game.GameScreenRoute
@@ -31,11 +33,15 @@ import com.example.untitledcasino.game.GameSelectionScreen
 import com.example.untitledcasino.game.HiLoControls
 import com.example.untitledcasino.game.HiLoVisuals
 import com.example.untitledcasino.game.vm.CoinFlipVM
+import com.example.untitledcasino.game.vm.DailyNumberVM
 import com.example.untitledcasino.game.vm.HiLoVM
 import com.example.untitledcasino.theme.UntitledCasinoTheme
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.IO
+import io.ktor.client.HttpClient
+import io.ktor.client.engine.cio.CIO
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.launch
+import kotlinx.serialization.json.Json
 import org.jetbrains.compose.resources.getString
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
@@ -44,6 +50,7 @@ import untitledcasino.composeapp.generated.resources.app_name
 import untitledcasino.composeapp.generated.resources.arrow_back
 import untitledcasino.composeapp.generated.resources.back
 import untitledcasino.composeapp.generated.resources.coin_flip_title
+import untitledcasino.composeapp.generated.resources.daily_number_title
 import untitledcasino.composeapp.generated.resources.hi_lo_title
 import untitledcasino.composeapp.generated.resources.purchase_failed
 import untitledcasino.composeapp.generated.resources.purchase_success
@@ -60,8 +67,14 @@ fun App(
     val playerRepo = remember { PlayerRepo(playerDao) }
 
     LaunchedEffect(Unit) {
-        scope.launch(Dispatchers.IO) {
-            playerRepo.initializePlayerIfNeeded()
+        playerRepo.initializePlayerIfNeeded()
+    }
+
+    val httpClient = remember {
+        HttpClient(CIO) {
+            install(ContentNegotiation) {
+                json(Json { ignoreUnknownKeys = true })
+            }
         }
     }
 
@@ -90,8 +103,10 @@ fun App(
                 }
                 composable<GameSelectionRoute> {
                     GameSelectionScreen(
-                        playerRepo = playerRepo,
-                        onStartGame = { selectedType -> navController.navigate(GameScreenRoute(gameType = selectedType)) }
+                        onStartGame = { selectedType -> navController.navigate(GameScreenRoute(gameType = selectedType)) },
+                        onHistory = {
+                            navController.navigate(HistoryScreenRoute(type = HistoryType.GAMEPLAY))
+                        },
                     )
                 }
                 composable<GameScreenRoute> { navBackStackEntry ->
@@ -118,18 +133,31 @@ fun App(
                                 controls = { HiLoControls(specificVm) }
                             )
                         }
+                        "dailynumber" -> {
+                            val specificVm = DailyNumberVM(stringResource(Res.string.daily_number_title), httpClient)
+                            specificVm.setup(playerRepo)
+                            specificVm to GameContent(
+                                title = specificVm.activeGame.value,
+                                viewModel = specificVm,
+                                visuals = { DailyNumberVisuals(specificVm) },
+                                controls = { DailyNumberControls(specificVm) }
+                            )
+                        }
                         else -> TODO("Unsupported game type")
                     }
 
                     GameScreen(playerRepo,gameContent, vm)
                 }
                 composable<CreditsRoute> {
+                    LaunchedEffect(Unit) {
+                        playerRepo.addCredits(100)
+                    }
                     CreditsScreen(
                         onPurchase = { selectedOption ->
                             navController.navigate(ConfirmRoute(selectedOption.creditsReceive))
                         },
                         onHistory = {
-                            navController.navigate(HistoryScreenRoute)
+                            navController.navigate(HistoryScreenRoute(type = HistoryType.PURCHASE))
                         },
                         playerRepo = playerRepo
                     )
@@ -171,16 +199,33 @@ fun App(
                         playerRepo = playerRepo,
                     )
                 }
-                composable<HistoryScreenRoute> {
-                    val purchases by playerRepo.purchaseHistory.collectAsState(initial = emptyList())
+                composable<HistoryScreenRoute> { navBackStackEntry ->
+                    val route = navBackStackEntry.toRoute<HistoryScreenRoute>()
 
-                    HistoryScreen(
-                        title = "Purchase History",
-                        historyItems = purchases,
-                        itemContent = { purchase ->
-                            PurchaseHistoryRow(purchase)
+                    when (route.type) {
+                        HistoryType.PURCHASE -> {
+                            val history by playerRepo.purchaseHistory.collectAsState(initial = emptyList())
+
+                            HistoryScreen(
+                                title = "Purchase History",
+                                historyItems = history,
+                                itemContent = { purchase ->
+                                    PurchaseHistoryRow(purchase)
+                                }
+                            )
                         }
-                    )
+                        HistoryType.GAMEPLAY -> {
+                            val history by playerRepo.gameplayHistory.collectAsState(initial = emptyList())
+
+                            HistoryScreen(
+                                title = "Game History",
+                                historyItems = history,
+                                itemContent = { gameplay ->
+                                    GameplayHistoryRow(gameplay)
+                                }
+                            )
+                        }
+                    }
                 }
             }
         }

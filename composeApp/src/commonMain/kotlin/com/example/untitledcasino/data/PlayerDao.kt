@@ -12,10 +12,10 @@ interface PlayerDao {
     suspend fun insertInitialPlayer(player: PlayerEntity): Long
 
     @Query("SELECT credits FROM PlayerEntity WHERE id = 1")
-    fun getPlayerCredits(): Flow<Int>
+    fun getPlayerCredits(): Flow<Int?>
 
     @Query("UPDATE PlayerEntity SET credits = :credits WHERE id = 1")
-    suspend fun setPlayerCredits(credits: Int)
+    suspend fun setPlayerCredits(credits: Int): Int
 
     @Insert
     suspend fun insertPurchase(purchase: PurchaseEntity): Long

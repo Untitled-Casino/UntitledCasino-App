@@ -78,40 +78,6 @@ fun CoinFlipControls(vm: CoinFlipVM) {
 }
 
 @Composable
-fun ChoiceBox(
-    text: String,
-    isDimmed: Boolean,
-    isEnabled: Boolean,
-    modifier: Modifier = Modifier,
-    baseContainerColor: Color = MaterialTheme.colorScheme.primary,
-    baseTextColor: Color = MaterialTheme.colorScheme.onPrimary,
-    onClick: () -> Unit
-) {
-    Box(
-        modifier = modifier
-            .height(60.dp) // Fixed height to make them look like bricks
-            .background(
-                color = when {
-                    !isEnabled || isDimmed -> baseContainerColor.copy(alpha = 0.5f)
-                    else -> baseContainerColor
-                },
-                shape = RectangleShape // This makes it a sharp box
-            )
-            .clickable(enabled = isEnabled) { onClick() },
-        contentAlignment = Alignment.Center
-    ) {
-        Text(
-            text = text,
-            color = when {
-                !isEnabled || isDimmed -> baseTextColor.copy(alpha = 0.5f)
-                else -> baseTextColor
-            },
-            fontWeight = FontWeight.Bold
-        )
-    }
-}
-
-@Composable
 fun CoinFlipVisuals(vm: CoinFlipVM) {
     val rotation = remember { Animatable(0f) }
     var showResultOverlay by remember { mutableStateOf(false) }
