@@ -9,4 +9,5 @@
     <string name="purchase_failed">Purchase failed</string>
     <string name="coin_flip_title">Coin Flip</string>
     <string name="hi_lo_title">Hi-Lo</string>
+    <string name="daily_number_title">Daily Number</string>
 </resources>
