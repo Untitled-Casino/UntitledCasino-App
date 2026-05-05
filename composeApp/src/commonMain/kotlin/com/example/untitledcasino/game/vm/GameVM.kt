@@ -16,8 +16,6 @@ abstract class GameVM(
     gameName: String
 ) : ViewModel() {
     protected var playerRepo: PlayerRepo? = null
-
-    // State for the UI to observe
     var betAmount by mutableStateOf(0)
     var isBusy by mutableStateOf(false)
         protected set
@@ -36,10 +34,6 @@ abstract class GameVM(
     }
 
     protected fun attemptStartGame(onSuccess: () -> Unit) {
-        isBusy = true
-        onSuccess()
-
-        /*
         if (betAmount <= 0) {
             uiMessage = "Please enter a valid bet."
             return
@@ -57,8 +51,6 @@ abstract class GameVM(
                 isBusy = false
             }
         }
-
-         */
     }
 
     protected fun grantWinnings(amount: Int) {

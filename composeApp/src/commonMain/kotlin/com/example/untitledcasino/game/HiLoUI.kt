@@ -34,10 +34,9 @@ import kotlinx.coroutines.delay
 @Composable
 fun HiLoControls(vm: HiLoVM) {
     Column(
-        modifier = Modifier.width(360.dp), // Match CoinFlip width
-        verticalArrangement = Arrangement.spacedBy(8.dp) // Match CoinFlip spacing
+        modifier = Modifier.width(360.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        // Top Row: Higher and Lower
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -58,14 +57,13 @@ fun HiLoControls(vm: HiLoVM) {
             )
         }
 
-        // Bottom Row: Swappable Play/Cash Out button
         if (!vm.isStreakActive) {
             ChoiceBox(
                 text = "PLAY",
                 isDimmed = false,
                 isEnabled = !vm.isBusy,
                 modifier = Modifier.fillMaxWidth(),
-                baseContainerColor = Color(0xFF0c9631), // Success Green from CoinFlip
+                baseContainerColor = MaterialTheme.colorScheme.primaryContainer,
                 onClick = { vm.startHiLo() }
             )
         } else {
@@ -74,7 +72,7 @@ fun HiLoControls(vm: HiLoVM) {
                 isDimmed = false,
                 isEnabled = !vm.isBusy && vm.round > 0,
                 modifier = Modifier.fillMaxWidth(),
-                baseContainerColor = Color(0xFFe67e22), // Orange for "Safety/Cash Out"
+                baseContainerColor = MaterialTheme.colorScheme.secondaryContainer,
                 onClick = { vm.cashOut() }
             )
         }
@@ -105,18 +103,19 @@ fun HiLoVisuals(vm: HiLoVM) {
 
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
 
+        Text(vm.uiMessage, color = Color.Red)
+
         Box(contentAlignment = Alignment.Center) {
-            // Your card visuals will go here
+
             Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
                 CardBox(value = vm.currentCard ?: 0, isFaceUp = vm.isStreakActive)
                 CardBox(value = vm.nextCard ?: 0, isFaceUp = vm.nextCard != null)
             }
 
-            // Win/Loss Overlay
             if (showResultOverlay) {
                 Box(
                     modifier = Modifier
-                        .matchParentSize() // Covers the exact area of the cards
+                        .matchParentSize()
                         .background(
                             color = Color.Black.copy(alpha = 0.6f),
                             shape = RoundedCornerShape(8.dp)
@@ -145,7 +144,6 @@ fun HiLoVisuals(vm: HiLoVM) {
 }
 
 
-// Helper to turn 1..13 into A, 2..10, J, Q, K
 fun getRank(value: Int): String = when (value) {
     1 -> "A"
     11 -> "J"
@@ -154,7 +152,6 @@ fun getRank(value: Int): String = when (value) {
     else -> value.toString()
 }
 
-// Determine if the card should be Red (Hearts/Diamonds) or Black
 fun getCardColor(value: Int): Color = if (value % 2 == 0) Color.Red else Color.Black
 
 @Composable
@@ -173,7 +170,6 @@ fun CardBox(value: Int, isFaceUp: Boolean) {
         contentAlignment = Alignment.Center
     ) {
         if (isFaceUp) {
-            // Top-Left Rank
             Text(
                 text = rank,
                 modifier = Modifier
@@ -183,8 +179,7 @@ fun CardBox(value: Int, isFaceUp: Boolean) {
                 color = cardColor,
                 fontWeight = FontWeight.Bold
             )
-
-            // Center Large Rank
+            //Text for the rank positions
             Text(
                 text = rank,
                 style = MaterialTheme.typography.displayMedium,
@@ -192,7 +187,6 @@ fun CardBox(value: Int, isFaceUp: Boolean) {
                 fontWeight = FontWeight.Bold
             )
 
-            // Bottom-Right Rank (Inverted)
             Text(
                 text = rank,
                 modifier = Modifier
@@ -206,8 +200,8 @@ fun CardBox(value: Int, isFaceUp: Boolean) {
         } else {
             // Card Back Pattern
             Text(
-                text = "♣︎", // Or any pattern
-                color = Color.White.copy(alpha = 0.3f),
+                text = "\uD83D\uDC37",
+                color = Color.White.copy(alpha = 0.1f),
                 fontSize = 40.sp
             )
         }

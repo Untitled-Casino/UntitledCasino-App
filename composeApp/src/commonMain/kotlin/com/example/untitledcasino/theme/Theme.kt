@@ -13,6 +13,8 @@ private val CasinoColorScheme = darkColorScheme( // darker color scheme should u
     onBackground = CasinoWhite,
     surface = CasinoGrey,
     onSurface = CasinoWhite,
+    primaryContainer = PlayGreen,
+    secondaryContainer = CashOutOrange
 )
 
 @Composable

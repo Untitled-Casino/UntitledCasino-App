@@ -62,6 +62,7 @@ fun GameScreen(
         ) {
             gameContent.controls()
             BetInput(
+                vm = vm,
                 onBetEntered = { vm.betAmount = it }
             )
         }
@@ -69,42 +70,50 @@ fun GameScreen(
 }
 
 @Composable
-fun BetInput(onBetEntered: (Int) -> Unit) {
+fun BetInput(
+    vm: GameVM,
+    onBetEntered: (Int) -> Unit
+) {
     var betAmount by remember { mutableStateOf("") }
 
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        Text(
-            text = "Bet:",
-            style = MaterialTheme.typography.bodyLarge
-        )
-
-        OutlinedTextField(
-            value = betAmount,
-            onValueChange = { newValue ->
-                if (newValue.all { it.isDigit() }) {
-                    betAmount = newValue
-                }
-            },
-            modifier = Modifier.weight(1f),
-            placeholder = { Text("0") },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            singleLine = true
-        )
-
-        Button(
-            onClick = {
-                val amount = betAmount.toIntOrNull() ?: 0
-                onBetEntered(amount)
-            },
-            enabled = betAmount.isNotEmpty()
+    Column() {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            Text("Enter")
+            Text(
+                text = "Bet:",
+                style = MaterialTheme.typography.bodyLarge
+            )
+
+            OutlinedTextField(
+                value = betAmount,
+                onValueChange = { newValue ->
+                    if (newValue.all { it.isDigit() }) {
+                        betAmount = newValue
+                    }
+                },
+                modifier = Modifier.weight(1f),
+                placeholder = { Text("0") },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                singleLine = true
+            )
+
+            Button(
+                onClick = {
+                    val amount = betAmount.toIntOrNull() ?: 0
+                    betAmount = ""
+                    onBetEntered(amount)
+                },
+                enabled = betAmount.isNotEmpty()
+            ) {
+                Text("Enter")
+            }
         }
+
+        Text("Current Bet: ${vm.betAmount}")
     }
 }
