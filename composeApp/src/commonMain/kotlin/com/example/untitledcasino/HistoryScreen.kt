@@ -15,11 +15,21 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.room.Entity
+import com.example.untitledcasino.data.GameplayEntity
 import com.example.untitledcasino.data.PurchaseEntity
 import kotlinx.serialization.Serializable
 
 @Serializable
-data object HistoryScreenRoute {
+enum class HistoryType {
+    PURCHASE,
+    GAMEPLAY
+}
+
+@Serializable
+data class HistoryScreenRoute (
+    val type: HistoryType
+){
 
 }
 
@@ -65,5 +75,14 @@ fun PurchaseHistoryRow(purchase: PurchaseEntity) {
         modifier = Modifier.fillMaxWidth().padding(8.dp),
     ) {
         Text("Purchase: ${formatWithCommas(purchase.credits.toString())} credits for ${formatPrice(purchase.priceInCents)} at ${formatEpochMillis(purchase.timestamp)}")
+    }
+}
+
+@Composable
+fun GameplayHistoryRow(gameplay: GameplayEntity) {
+    Card(
+        modifier = Modifier.fillMaxWidth().padding(8.dp),
+    ) {
+        Text("${gameplay.gameName} - Bet: ${formatWithCommas(gameplay.bet.toString())} - Reward: ${formatWithCommas(gameplay.reward.toString())} at ${formatEpochMillis(gameplay.timestamp)}")
     }
 }

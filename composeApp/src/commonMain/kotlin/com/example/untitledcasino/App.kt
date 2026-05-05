@@ -21,6 +21,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.example.untitledcasino.data.CasinoDatabase
+import com.example.untitledcasino.data.PurchaseEntity
 import com.example.untitledcasino.game.CoinFlipControls
 import com.example.untitledcasino.game.CoinFlipVisuals
 import com.example.untitledcasino.game.GameContent
@@ -60,9 +61,7 @@ fun App(
     val playerRepo = remember { PlayerRepo(playerDao) }
 
     LaunchedEffect(Unit) {
-        scope.launch(Dispatchers.IO) {
-            playerRepo.initializePlayerIfNeeded()
-        }
+        playerRepo.initializePlayerIfNeeded()
     }
 
     UntitledCasinoTheme {
@@ -90,8 +89,10 @@ fun App(
                 }
                 composable<GameSelectionRoute> {
                     GameSelectionScreen(
-                        playerRepo = playerRepo,
-                        onStartGame = { selectedType -> navController.navigate(GameScreenRoute(gameType = selectedType)) }
+                        onStartGame = { selectedType -> navController.navigate(GameScreenRoute(gameType = selectedType)) },
+                        onHistory = {
+                            navController.navigate(HistoryScreenRoute(type = HistoryType.GAMEPLAY))
+                        },
                     )
                 }
                 composable<GameScreenRoute> { navBackStackEntry ->
@@ -124,12 +125,15 @@ fun App(
                     GameScreen(playerRepo,gameContent, vm)
                 }
                 composable<CreditsRoute> {
+                    LaunchedEffect(Unit) {
+                        playerRepo.addCredits(100)
+                    }
                     CreditsScreen(
                         onPurchase = { selectedOption ->
                             navController.navigate(ConfirmRoute(selectedOption.creditsReceive))
                         },
                         onHistory = {
-                            navController.navigate(HistoryScreenRoute)
+                            navController.navigate(HistoryScreenRoute(type = HistoryType.PURCHASE))
                         },
                         playerRepo = playerRepo
                     )
@@ -171,16 +175,33 @@ fun App(
                         playerRepo = playerRepo,
                     )
                 }
-                composable<HistoryScreenRoute> {
-                    val purchases by playerRepo.purchaseHistory.collectAsState(initial = emptyList())
+                composable<HistoryScreenRoute> { navBackStackEntry ->
+                    val route = navBackStackEntry.toRoute<HistoryScreenRoute>()
 
-                    HistoryScreen(
-                        title = "Purchase History",
-                        historyItems = purchases,
-                        itemContent = { purchase ->
-                            PurchaseHistoryRow(purchase)
+                    when (route.type) {
+                        HistoryType.PURCHASE -> {
+                            val history by playerRepo.purchaseHistory.collectAsState(initial = emptyList())
+
+                            HistoryScreen(
+                                title = "Purchase History",
+                                historyItems = history,
+                                itemContent = { purchase ->
+                                    PurchaseHistoryRow(purchase)
+                                }
+                            )
                         }
-                    )
+                        HistoryType.GAMEPLAY -> {
+                            val history by playerRepo.gameplayHistory.collectAsState(initial = emptyList())
+
+                            HistoryScreen(
+                                title = "Game History",
+                                historyItems = history,
+                                itemContent = { gameplay ->
+                                    GameplayHistoryRow(gameplay)
+                                }
+                            )
+                        }
+                    }
                 }
             }
         }
