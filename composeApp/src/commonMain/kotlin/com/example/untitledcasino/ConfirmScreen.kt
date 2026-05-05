@@ -46,7 +46,7 @@ fun ConfirmScreen(
         CreditBalance(playerRepo)
         Spacer(Modifier.height(16.dp))
         Text(
-            text = "Confirm purchase of ${formatWithCommas(option.creditsReceive)} credits?",
+            text = "Confirm purchase of ${formatWithCommas(option.creditsReceive.toString())} credits?",
             color = MaterialTheme.colorScheme.onBackground,
         )
         Icon(

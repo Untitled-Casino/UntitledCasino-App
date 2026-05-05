@@ -6,9 +6,15 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.untitledcasino.PlayerRepo
+import com.example.untitledcasino.currentTimeMillis
+import com.example.untitledcasino.data.PurchaseEntity
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-abstract class GameVM : ViewModel() {
+abstract class GameVM(
+    gameName: String
+) : ViewModel() {
     protected var playerRepo: PlayerRepo? = null
 
     // State for the UI to observe
@@ -16,24 +22,27 @@ abstract class GameVM : ViewModel() {
     var isBusy by mutableStateOf(false)
         protected set
 
+    private var _activeGame = MutableStateFlow("")
+    val activeGame: StateFlow<String> = _activeGame
+
     var uiMessage by mutableStateOf("")
+
+    init {
+        _activeGame.value = gameName
+    }
 
     open fun setup(repo: PlayerRepo) {
         this.playerRepo = repo
     }
 
     protected fun attemptStartGame(onSuccess: () -> Unit) {
-        val amount = betAmount
-        isBusy = true
-        onSuccess()
-
-        if (amount <= 0) {
+        if (betAmount <= 0) {
             uiMessage = "Please enter a valid bet."
             return
         }
 
         viewModelScope.launch {
-            val success = playerRepo?.tryCharge(amount) ?: false
+            val success = playerRepo?.tryCharge(betAmount) ?: false
 
             if (success) {
                 uiMessage = ""
@@ -41,13 +50,18 @@ abstract class GameVM : ViewModel() {
                 onSuccess()
             } else {
                 uiMessage = "Insufficient credits!"
+                isBusy = false
             }
         }
     }
 
     protected fun grantWinnings(amount: Int) {
         viewModelScope.launch {
-            playerRepo?.addCredits(amount)
+            playerRepo?.recordGameplay(
+                gameName = activeGame.value,
+                bet = betAmount,
+                reward = amount,
+            )
             isBusy = false
         }
     }

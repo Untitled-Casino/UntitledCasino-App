@@ -10,9 +10,9 @@ import kotlinx.coroutines.IO
 
 @Database(
     entities = [
-        PlayerEntity::class,
+        PlayerEntity::class, PurchaseEntity::class, GameplayEntity::class
     ],
-    version = 2,
+    version = 3,
 )
 @ConstructedBy(AppDatabaseConstructor::class)
 abstract class CasinoDatabase : RoomDatabase() {

@@ -22,4 +22,10 @@ interface PlayerDao {
 
     @Query("SELECT * FROM PurchaseEntity WHERE playerId = 1 ORDER BY timestamp DESC")
     fun getPurchaseHistory(): Flow<List<PurchaseEntity>>
+
+    @Insert
+    suspend fun insertGameplay(gameplay: GameplayEntity): Long
+
+    @Query("SELECT * FROM GameplayEntity WHERE playerId = 1 ORDER BY timestamp DESC")
+    fun getGameplayHistory(): Flow<List<GameplayEntity>>
 }

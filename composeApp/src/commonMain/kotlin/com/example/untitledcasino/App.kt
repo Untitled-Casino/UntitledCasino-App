@@ -99,20 +99,20 @@ fun App(
 
                     val (vm, gameContent) = when (game.gameType) {
                         "coinflip" -> {
-                            val specificVm = CoinFlipVM()
+                            val specificVm = CoinFlipVM(stringResource(Res.string.coin_flip_title))
                             specificVm.setup(playerRepo)
                             specificVm to GameContent(
-                                title = stringResource(Res.string.coin_flip_title),
+                                title = specificVm.activeGame.value,
                                 viewModel = specificVm,
                                 visuals = { CoinFlipVisuals(specificVm) },
                                 controls = { CoinFlipControls(specificVm) }
                             )
                         }
                         "hilo" -> {
-                            val specificVm = HiLoVM()
+                            val specificVm = HiLoVM(stringResource(Res.string.hi_lo_title))
                             specificVm.setup(playerRepo)
                             specificVm to GameContent(
-                                title = stringResource(Res.string.hi_lo_title),
+                                title = specificVm.activeGame.value,
                                 viewModel = specificVm,
                                 visuals = { HiLoVisuals(specificVm) },
                                 controls = { HiLoControls(specificVm) }
@@ -127,6 +127,9 @@ fun App(
                     CreditsScreen(
                         onPurchase = { selectedOption ->
                             navController.navigate(ConfirmRoute(selectedOption.creditsReceive))
+                        },
+                        onHistory = {
+                            navController.navigate(HistoryScreenRoute)
                         },
                         playerRepo = playerRepo
                     )
@@ -143,7 +146,7 @@ fun App(
 
                                 val message = getString(
                                     Res.string.purchase_success,
-                                    formatWithCommas(option.creditsReceive),
+                                    formatWithCommas(option.creditsReceive.toString()),
                                     formatPrice(option.priceInCents),
                                 )
 
@@ -166,6 +169,17 @@ fun App(
                             }
                         },
                         playerRepo = playerRepo,
+                    )
+                }
+                composable<HistoryScreenRoute> {
+                    val purchases by playerRepo.purchaseHistory.collectAsState(initial = emptyList())
+
+                    HistoryScreen(
+                        title = "Purchase History",
+                        historyItems = purchases,
+                        itemContent = { purchase ->
+                            PurchaseHistoryRow(purchase)
+                        }
                     )
                 }
             }

@@ -1,5 +1,6 @@
 package com.example.untitledcasino
 
+import com.example.untitledcasino.data.GameplayEntity
 import com.example.untitledcasino.data.PlayerDao
 import com.example.untitledcasino.data.PlayerEntity
 import com.example.untitledcasino.data.PurchaseEntity
@@ -15,6 +16,9 @@ const val INIT_CREDITS = 100
 
 class PlayerRepo(private val playerDao: PlayerDao) {
     val credits: Flow<Int?> = playerDao.getPlayerCredits()
+
+    val purchaseHistory: Flow<List<PurchaseEntity>> = playerDao.getPurchaseHistory()
+    val gameplayHistory: Flow<List<GameplayEntity>> = playerDao.getGameplayHistory()
 
     suspend fun initializePlayerIfNeeded() {
         withContext(Dispatchers.IO) {
@@ -44,9 +48,7 @@ class PlayerRepo(private val playerDao: PlayerDao) {
     }
 
     suspend fun recordPurchase(option: CreditPurchaseOption) {
-        val currentBalance = playerDao.getPlayerCredits().first() ?: 0
-        val newBalance = currentBalance + option.creditsReceive
-        playerDao.setPlayerCredits(newBalance)
+        addCredits(option.creditsReceive)
 
         playerDao.insertPurchase(
             PurchaseEntity(
@@ -55,6 +57,18 @@ class PlayerRepo(private val playerDao: PlayerDao) {
                 timestamp = currentTimeMillis(),
             )
         )
+    }
 
+    suspend fun recordGameplay(gameName: String, bet: Int, reward: Int) {
+        addCredits(reward)
+
+        playerDao.insertGameplay(
+            GameplayEntity(
+                gameName = gameName,
+                bet = bet,
+                reward = reward,
+                timestamp = currentTimeMillis(),
+            )
+        )
     }
 }

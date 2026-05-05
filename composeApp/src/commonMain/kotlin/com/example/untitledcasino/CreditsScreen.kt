@@ -58,6 +58,7 @@ val creditPurchaseOptionsMap = creditPurchaseOptions.associateBy { it.creditsRec
 @Composable
 fun CreditsScreen(
     onPurchase: (option: CreditPurchaseOption) -> Unit,
+    onHistory: () -> Unit,
     playerRepo: PlayerRepo,
 ) {
     var currentOption by remember { mutableStateOf<CreditPurchaseOption?>(null) }
@@ -68,6 +69,15 @@ fun CreditsScreen(
         modifier = Modifier.padding(16.dp),
     ) {
         CreditBalance(playerRepo)
+        Spacer(Modifier.height(16.dp))
+        Button(
+            onClick = onHistory
+        ) {
+            Text(
+                text = "History",
+                fontWeight = FontWeight.Bold,
+            )
+        }
         Spacer(Modifier.height(16.dp))
         LazyVerticalGrid(
             columns = GridCells.Fixed(3),
@@ -90,7 +100,7 @@ fun CreditsScreen(
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Text(
-                    text = "${formatWithCommas(currentOption!!.creditsReceive)} Credits",
+                    text = "${formatWithCommas(currentOption!!.creditsReceive.toString())} Credits",
                     color = MaterialTheme.colorScheme.onBackground,
                 )
                 Button(
@@ -129,7 +139,7 @@ fun CreditPurchaseOptionItem(
             verticalArrangement = Arrangement.SpaceEvenly
         ) {
             Text(
-                text = formatWithCommas(option.creditsReceive),
+                text = formatWithCommas(option.creditsReceive.toString()),
                 fontWeight = FontWeight.Bold,
             )
             Icon(
