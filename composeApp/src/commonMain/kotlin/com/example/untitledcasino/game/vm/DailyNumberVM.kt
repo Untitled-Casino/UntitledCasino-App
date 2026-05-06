@@ -45,21 +45,23 @@ class DailyNumberVM(
     }
 
     fun roll() {
-        val roll = (0..9999).random()
-        rolledNumber = roll
+        val target = goalNumber ?: return
 
-        val target = goalNumber!!
+        attemptStartGame {
+            val roll = (0..9999).random()
+            rolledNumber = roll
 
-        val winnings = if (roll == target) {
-            betAmount * 1000
-        } else {
-            val difference = abs(roll - target).toDouble()
-            val closeness = 1.0 - (difference / 10000.0)
+            val winnings = if (roll == target) {
+                betAmount * 1000
+            } else {
+                val difference = abs(roll - target).toDouble()
+                val closeness = 1.0 - (difference / 10000.0)
 
-            (betAmount * closeness).toInt()
+                (betAmount * closeness).toInt()
+            }
+
+            grantWinnings(winnings)
+            uiMessage = "You won ${formatWithCommas(winnings.toString())} credits!"
         }
-
-        grantWinnings(winnings)
-        uiMessage = "You won ${formatWithCommas(winnings.toString())} credits!"
     }
 }
