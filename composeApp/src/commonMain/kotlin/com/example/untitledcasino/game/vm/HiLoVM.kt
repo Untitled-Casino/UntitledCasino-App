@@ -35,7 +35,7 @@ class HiLoVM(
         if (isBusy || !isStreakActive) return
 
         val drawn = (1..13).random()
-        roundWon = if (higher) drawn > current else drawn <= current
+        roundWon = if (higher) drawn > current else drawn < current
 
         nextCard = drawn
     }

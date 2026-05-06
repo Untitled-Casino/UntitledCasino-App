@@ -2,8 +2,10 @@ package com.example.untitledcasino
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
@@ -12,6 +14,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.navigation.NavBackStackEntry
@@ -84,7 +87,6 @@ fun App(
     val destination = navBackStackEntry?.destination
 
     val topBarTitle = when {
-        destination?.hasRoute<HomeRoute>() == true -> "Home"
         destination?.hasRoute<CreditsRoute>() == true -> "Credits"
         destination?.hasRoute<ConfirmRoute>() == true -> "Confirm Purchase"
         destination?.hasRoute<HistoryScreenRoute>() == true -> "History"
@@ -164,7 +166,7 @@ fun App(
                                 controls = { DailyNumberControls(specificVm) }
                             )
                         }
-                        else -> TODO("Unsupported game type")
+                        else -> TODO("DO THIS")
                     }
 
                     GameScreen(playerRepo,gameContent, vm)
@@ -254,20 +256,20 @@ private fun TopBar(
     back: (() -> Unit)? = null,
     text: String,
 ) {
-    TopAppBar(
+    CenterAlignedTopAppBar (
         title = {
             Text(
                 text =  text,
                 fontWeight = FontWeight.Bold,
             )
         },
-        colors = TopAppBarDefaults.topAppBarColors(
+        colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
             containerColor = MaterialTheme.colorScheme.primary,
             titleContentColor = MaterialTheme.colorScheme.onPrimary,
         ),
         navigationIcon = {
             if (back != null) {
-                Button(onClick = back) {
+                IconButton(onClick = back) {
                     Icon(
                         painterResource(Res.drawable.arrow_back),
                         contentDescription = stringResource(Res.string.back),
