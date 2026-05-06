@@ -31,7 +31,6 @@ import kotlinx.serialization.Serializable
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
-import untitledcasino.composeapp.generated.resources.Res
 import untitledcasino.composeapp.generated.resources.*
 
 @Serializable
@@ -89,7 +88,7 @@ fun CreditsScreen(
             onClick = onHistory
         ) {
             Text(
-                text = "History",
+                text = stringResource(Res.string.history),
                 fontWeight = FontWeight.Bold,
             )
         }
@@ -99,7 +98,10 @@ fun CreditsScreen(
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Text(
-                    text = "${formatWithCommas(currentOption!!.creditsReceive.toString())} Credits",
+                    text = stringResource(
+                        Res.string.amount_of_credits,
+                        formatWithCommas(currentOption!!.creditsReceive.toString())
+                    ),
                     color = MaterialTheme.colorScheme.onBackground,
                 )
                 Button(

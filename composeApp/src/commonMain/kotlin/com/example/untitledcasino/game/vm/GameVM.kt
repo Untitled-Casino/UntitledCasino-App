@@ -9,6 +9,8 @@ import com.example.untitledcasino.PlayerRepo
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import org.jetbrains.compose.resources.getString
+import untitledcasino.composeapp.generated.resources.*
 
 abstract class GameVM() : ViewModel() {
     protected var playerRepo: PlayerRepo? = null
@@ -28,7 +30,9 @@ abstract class GameVM() : ViewModel() {
 
     protected fun attemptStartGame(onSuccess: () -> Unit) {
         if (betAmount <= 0) {
-            uiMessage = "Please enter a valid bet."
+            viewModelScope.launch {
+                uiMessage = getString(Res.string.valid_bet)
+            }
             return
         }
 
@@ -40,7 +44,9 @@ abstract class GameVM() : ViewModel() {
                 isBusy = true
                 onSuccess()
             } else {
-                uiMessage = "Insufficient credits!"
+                viewModelScope.launch {
+                    uiMessage = getString(Res.string.insufficient_credits)
+                }
                 isBusy = false
             }
         }

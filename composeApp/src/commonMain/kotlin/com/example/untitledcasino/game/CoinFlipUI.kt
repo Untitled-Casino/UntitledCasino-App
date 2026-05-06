@@ -8,14 +8,12 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.scaleIn
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
@@ -30,48 +28,47 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.untitledcasino.game.vm.CoinFlipVM
 import kotlinx.coroutines.delay
+import org.jetbrains.compose.resources.stringResource
+import untitledcasino.composeapp.generated.resources.*
 
 @Composable
 fun CoinFlipControls(vm: CoinFlipVM) {
     Column(
-        modifier = Modifier.width(360.dp), // Set a fixed width for the control group
-        verticalArrangement = Arrangement.spacedBy(8.dp) // Space between rows
+        modifier = Modifier.width(360.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        // Top Row: Heads and Tails
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(8.dp) // Space between boxes
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             ChoiceBox(
-                text = "Heads",
+                text = stringResource(Res.string.heads),
                 isDimmed = vm.sideSelection == "T",
                 isEnabled = !vm.isBusy,
-                modifier = Modifier.weight(1f), // Each takes half width
+                modifier = Modifier.weight(1f),
                 onClick = { vm.select("H") }
             )
             ChoiceBox(
-                text = "Tails",
+                text = stringResource(Res.string.tails),
                 isDimmed = vm.sideSelection == "H",
                 isEnabled = !vm.isBusy,
-                modifier = Modifier.weight(1f), // Each takes half width
+                modifier = Modifier.weight(1f),
                 onClick = { vm.select("T") }
             )
         }
 
-        // Bottom Row: Play Button
         ChoiceBox(
-            text = "PLAY",
+            text = stringResource(Res.string.play),
             isDimmed = false,
             isEnabled = !vm.isBusy && vm.sideSelection.isNotEmpty(),
-            modifier = Modifier.fillMaxWidth(), // Takes full width of the row above
-            baseContainerColor = Color(0xFF0c9631), // Distinct color for Play
+            modifier = Modifier.fillMaxWidth(),
+            baseContainerColor = Color(0xFF0c9631),
             onClick = { vm.flip() }
         )
     }
@@ -83,7 +80,6 @@ fun CoinFlipVisuals(vm: CoinFlipVM) {
     var showResultOverlay by remember { mutableStateOf(false) }
     var hasWonState by remember { mutableStateOf<Boolean?>(null)}
 
-    // Trigger animation when the result changes
     LaunchedEffect(vm.isBusy) {
         if (vm.isBusy) {
             showResultOverlay = false
@@ -99,7 +95,6 @@ fun CoinFlipVisuals(vm: CoinFlipVM) {
                 animationSpec = tween(durationMillis = 800, easing = FastOutSlowInEasing)
             )
 
-            // Snapshot the result for the overlay
             hasWonState = vm.won
             delay(300)
             showResultOverlay = true
@@ -114,7 +109,6 @@ fun CoinFlipVisuals(vm: CoinFlipVM) {
             modifier = Modifier.size(200.dp),
             contentAlignment = Alignment.Center
         ) {
-            // The Coin
             Box(
                 modifier = Modifier
                     .size(120.dp)
@@ -126,8 +120,6 @@ fun CoinFlipVisuals(vm: CoinFlipVM) {
                     .border(4.dp, Color(0xFFB8860B), CircleShape),
                 contentAlignment = Alignment.Center
             ) {
-                // Determine which side is facing the user based on rotation
-                // Normalize rotation to 0-360 range
                 val normalizedRotation = (rotation.value % 360f + 360f) % 360f
                 val isBackSide = normalizedRotation in 90f..270f
 
@@ -142,7 +134,6 @@ fun CoinFlipVisuals(vm: CoinFlipVM) {
                 )
             }
 
-            // The Overlay Message
             Column {
                 AnimatedVisibility(
                     visible = showResultOverlay,
@@ -155,7 +146,7 @@ fun CoinFlipVisuals(vm: CoinFlipVM) {
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
-                            text = if (hasWonState == true) "WINNER!" else "TRY AGAIN",
+                            text = if (hasWonState == true) stringResource(Res.string.winner) else stringResource(Res.string.try_again),
                             color = if (hasWonState == true) Color.Green else Color.White,
                             fontSize = 32.sp,
                             fontWeight = FontWeight.Black

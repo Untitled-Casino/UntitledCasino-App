@@ -24,20 +24,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.LineHeightStyle
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import kotlinx.serialization.Serializable
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
-import untitledcasino.composeapp.generated.resources.Res
-import untitledcasino.composeapp.generated.resources.coin_flip_image
-import untitledcasino.composeapp.generated.resources.coin_flip_title
-import untitledcasino.composeapp.generated.resources.daily_number_title
-import untitledcasino.composeapp.generated.resources.hi_lo_image
-import untitledcasino.composeapp.generated.resources.hi_lo_title
-import untitledcasino.composeapp.generated.resources.piggy_bank
+import untitledcasino.composeapp.generated.resources.*
 
 @Serializable
 data object GameSelectionRoute {
@@ -55,15 +47,12 @@ fun GameSelectionScreen(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center
     ) {
-
         LazyColumn(
             modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(8.dp),
             contentPadding = PaddingValues(16.dp)
         ) {
-
-
             items(items = games) {
                     game ->
                 GameCard(
@@ -72,15 +61,13 @@ fun GameSelectionScreen(
                     gameID = game.gameID,
                 ) { id -> onStartGame(id) }
             }
-
             item {
                 Spacer(modifier = Modifier.height(32.dp))
-
                 Button(
                     onClick = onHistory
                 ) {
                     Text(
-                        text = "History",
+                        text = stringResource(Res.string.history),
                         fontWeight = FontWeight.Bold,
                     )
                 }
@@ -96,7 +83,7 @@ fun GameCard(
     gameID: String,
     onStartGame: (String) -> Unit,
 ) {
-    Column() {
+    Column {
         GamePicture(
             resource = resource,
         )
@@ -133,12 +120,13 @@ fun GamePicture(
 
 @Composable
 fun PlayButton(
-    text: String = "Button",
+    text: String = stringResource(Res.string.button),
     gameID: String,
     modifier: Modifier = Modifier,
     buttonColor: Color = MaterialTheme.colorScheme.primary,
     textColor: Color = MaterialTheme.colorScheme.onPrimary,
-    onStartGame: (String) -> Unit) {
+    onStartGame: (String) -> Unit
+) {
     Box(
         modifier = modifier
             .height(60.dp)

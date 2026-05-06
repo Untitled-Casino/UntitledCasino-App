@@ -7,21 +7,17 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ModifierLocalBeyondBoundsLayout
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -29,6 +25,8 @@ import com.example.untitledcasino.CreditBalance
 import com.example.untitledcasino.PlayerRepo
 import com.example.untitledcasino.game.vm.GameVM
 import kotlinx.serialization.Serializable
+import org.jetbrains.compose.resources.stringResource
+import untitledcasino.composeapp.generated.resources.*
 
 @Serializable
 data class GameScreenRoute (
@@ -80,7 +78,7 @@ fun BetInput(
 ) {
     var betAmount by rememberSaveable { mutableStateOf("") }
 
-    Column() {
+    Column {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -89,7 +87,7 @@ fun BetInput(
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             Text(
-                text = "Bet:",
+                text = stringResource(Res.string.bet),
                 style = MaterialTheme.typography.bodyLarge
             )
 
@@ -109,7 +107,7 @@ fun BetInput(
             )
 
             ChoiceBox(
-                text = "Enter",
+                text = stringResource(Res.string.enter),
                 modifier = Modifier.weight(1f),
                 onClick = {
                     val amount = betAmount.toIntOrNull() ?: 0
@@ -122,7 +120,10 @@ fun BetInput(
 
         Text(
             modifier = Modifier.fillMaxWidth(),
-            text = "Current Bet: ${vm.betAmount}"
+            text = stringResource(
+                Res.string.current_bet,
+                vm.betAmount
+            )
         )
     }
 }

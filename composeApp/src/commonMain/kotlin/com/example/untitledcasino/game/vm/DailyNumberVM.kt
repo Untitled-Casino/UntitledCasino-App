@@ -8,12 +8,10 @@ import com.example.untitledcasino.formatWithCommas
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
-import io.ktor.client.statement.bodyAsText
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
-import org.jetbrains.compose.resources.stringResource
-import untitledcasino.composeapp.generated.resources.Res
-import untitledcasino.composeapp.generated.resources.coin_flip_title
+import org.jetbrains.compose.resources.getString
+import untitledcasino.composeapp.generated.resources.*
 import kotlin.math.abs
 
 @Serializable
@@ -22,7 +20,7 @@ data class DailyNumberResponse(
 )
 
 
-class DailyNumberVM() : GameVM() {
+class DailyNumberVM : GameVM() {
 
     private var httpClient: HttpClient? = null
 
@@ -40,7 +38,7 @@ class DailyNumberVM() : GameVM() {
                 val response: DailyNumberResponse = httpClient!!.get("https://itchybarn.com/api/dailynumber").body()
                 goalNumber = response.number
             } catch (e: Exception) {
-                uiMessage = "Failed to fetch daily goal"
+                uiMessage = getString(Res.string.failed_daily_goal)
             }
         }
     }
@@ -62,7 +60,12 @@ class DailyNumberVM() : GameVM() {
             }
 
             grantWinnings(winnings)
-            uiMessage = "You won ${formatWithCommas(winnings.toString())} credits!"
+            viewModelScope.launch {
+                uiMessage = getString(
+                    Res.string.you_won_credits,
+                    formatWithCommas(number = winnings.toString()),
+                )
+            }
         }
     }
 }

@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -30,6 +29,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.untitledcasino.game.vm.HiLoVM
 import kotlinx.coroutines.delay
+import org.jetbrains.compose.resources.stringResource
+import untitledcasino.composeapp.generated.resources.*
 
 @Composable
 fun HiLoControls(vm: HiLoVM) {
@@ -42,14 +43,14 @@ fun HiLoControls(vm: HiLoVM) {
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             ChoiceBox(
-                text = "HIGHER",
+                text = stringResource(Res.string.higher),
                 isDimmed = false,
                 isEnabled = vm.isStreakActive && !vm.isBusy,
                 modifier = Modifier.weight(1f),
                 onClick = { vm.makeGuess(higher = true) }
             )
             ChoiceBox(
-                text = "LOWER",
+                text = stringResource(Res.string.lower),
                 isDimmed = false,
                 isEnabled = vm.isStreakActive && !vm.isBusy,
                 modifier = Modifier.weight(1f),
@@ -59,7 +60,7 @@ fun HiLoControls(vm: HiLoVM) {
 
         if (!vm.isStreakActive) {
             ChoiceBox(
-                text = "PLAY",
+                text = stringResource(Res.string.play),
                 isDimmed = false,
                 isEnabled = !vm.isBusy && !vm.isAnimationPlaying,
                 modifier = Modifier.fillMaxWidth(),
@@ -68,7 +69,7 @@ fun HiLoControls(vm: HiLoVM) {
             )
         } else {
             ChoiceBox(
-                text = "CASH OUT",
+                text = stringResource(Res.string.cash_out),
                 isDimmed = false,
                 isEnabled = !vm.isBusy && vm.round > 0,
                 modifier = Modifier.fillMaxWidth(),
@@ -127,9 +128,9 @@ fun HiLoVisuals(vm: HiLoVM) {
                     contentAlignment = Alignment.Center
                 ) {
                     val message = when {
-                        !vm.isStreakActive && vm.gameWon -> "CONGRATS YOU WIN!"
-                        vm.roundWon -> "NICE JOB!"
-                        else -> "YOU LOSE"
+                        !vm.isStreakActive && vm.gameWon -> stringResource(Res.string.congrats)
+                        vm.roundWon -> stringResource(Res.string.nice_job)
+                        else -> stringResource(Res.string.you_lose)
                     }
 
                     Text(
@@ -183,7 +184,6 @@ fun CardBox(value: Int, isFaceUp: Boolean) {
                 color = cardColor,
                 fontWeight = FontWeight.Bold
             )
-            //Text for the rank positions
             Text(
                 text = rank,
                 style = MaterialTheme.typography.displayMedium,
@@ -196,13 +196,12 @@ fun CardBox(value: Int, isFaceUp: Boolean) {
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
                     .padding(8.dp)
-                    .graphicsLayer { rotationZ = 180f }, // Flip it upside down
+                    .graphicsLayer { rotationZ = 180f },
                 style = MaterialTheme.typography.titleMedium,
                 color = cardColor,
                 fontWeight = FontWeight.Bold
             )
         } else {
-            // Card Back Pattern
             Text(
                 text = "\uD83D\uDC37",
                 color = Color.White.copy(alpha = 0.1f),

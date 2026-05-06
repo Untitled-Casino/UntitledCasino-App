@@ -12,7 +12,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 
@@ -29,13 +28,13 @@ fun ChoiceBox(
 ) {
     Box(
         modifier = modifier
-            .height(60.dp) // Fixed height to make them look like bricks
+            .height(60.dp)
             .background(
                 color = when {
                     !isEnabled || isDimmed -> baseContainerColor.copy(alpha = 0.5f)
                     else -> baseContainerColor
                 },
-                shape = RectangleShape // This makes it a sharp box
+                shape = RectangleShape
             )
             .clickable(enabled = isEnabled) { onClick() },
         contentAlignment = Alignment.Center

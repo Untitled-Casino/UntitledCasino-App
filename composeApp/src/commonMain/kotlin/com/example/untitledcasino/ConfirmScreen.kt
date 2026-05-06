@@ -21,9 +21,7 @@ import androidx.compose.ui.unit.dp
 import kotlinx.serialization.Serializable
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
-import untitledcasino.composeapp.generated.resources.Res
-import untitledcasino.composeapp.generated.resources.cancel
-import untitledcasino.composeapp.generated.resources.credits
+import untitledcasino.composeapp.generated.resources.*
 
 @Serializable
 data class ConfirmRoute(
@@ -46,7 +44,10 @@ fun ConfirmScreen(
         CreditBalance(playerRepo)
         Spacer(Modifier.height(16.dp))
         Text(
-            text = "Confirm purchase of ${formatWithCommas(option.creditsReceive.toString())} credits?",
+            text = stringResource(
+                Res.string.confirm_purchase_of_credits,
+                formatWithCommas(option.creditsReceive.toString())
+            ),
             color = MaterialTheme.colorScheme.onBackground,
         )
         Icon(

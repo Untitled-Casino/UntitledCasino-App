@@ -2,15 +2,7 @@ package com.example.untitledcasino.game
 
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.StringResource
-import org.jetbrains.compose.resources.stringResource
-import untitledcasino.composeapp.generated.resources.Res
-import untitledcasino.composeapp.generated.resources.coin_flip_image
-import untitledcasino.composeapp.generated.resources.coin_flip_title
-import untitledcasino.composeapp.generated.resources.daily_number_image
-import untitledcasino.composeapp.generated.resources.daily_number_title
-import untitledcasino.composeapp.generated.resources.hi_lo_image
-import untitledcasino.composeapp.generated.resources.hi_lo_title
-import untitledcasino.composeapp.generated.resources.piggy_bank
+import untitledcasino.composeapp.generated.resources.*
 
 data class GameInfo(
     val title: StringResource,

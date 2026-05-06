@@ -19,9 +19,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
-import untitledcasino.composeapp.generated.resources.Res
-import untitledcasino.composeapp.generated.resources.balance
-import untitledcasino.composeapp.generated.resources.piggy_bank
+import untitledcasino.composeapp.generated.resources.*
 
 @Composable
 fun CreditBalance(

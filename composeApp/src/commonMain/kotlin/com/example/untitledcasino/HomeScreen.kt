@@ -26,6 +26,9 @@ import org.jetbrains.compose.resources.stringResource
 import untitledcasino.composeapp.generated.resources.Res
 import untitledcasino.composeapp.generated.resources.app_name
 import untitledcasino.composeapp.generated.resources.casino_logo
+import untitledcasino.composeapp.generated.resources.credits
+import untitledcasino.composeapp.generated.resources.games
+import untitledcasino.composeapp.generated.resources.get_help
 
 @Serializable
 data object HomeRoute {
@@ -52,7 +55,7 @@ fun HomeScreen(
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             ChoiceBox(
-                text = "Games",
+                text = stringResource(Res.string.games),
                 isDimmed = false,
                 isEnabled = true,
                 modifier = Modifier.weight(1f),
@@ -60,7 +63,7 @@ fun HomeScreen(
                 style = MaterialTheme.typography.titleLarge,
             )
             ChoiceBox(
-                text = "Credits",
+                text = stringResource(Res.string.credits),
                 isDimmed = false,
                 isEnabled = true,
                 modifier = Modifier.weight(1f),
@@ -69,7 +72,7 @@ fun HomeScreen(
             )
         }
         ChoiceBox(
-            text = "Get Help",
+            text = stringResource(Res.string.get_help),
             isDimmed = false,
             isEnabled = true,
             modifier = Modifier.fillMaxWidth(),

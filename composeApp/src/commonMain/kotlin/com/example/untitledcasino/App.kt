@@ -1,7 +1,6 @@
 package com.example.untitledcasino
 
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -11,10 +10,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -50,15 +47,7 @@ import kotlinx.serialization.json.Json
 import org.jetbrains.compose.resources.getString
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
-import untitledcasino.composeapp.generated.resources.Res
-import untitledcasino.composeapp.generated.resources.app_name
-import untitledcasino.composeapp.generated.resources.arrow_back
-import untitledcasino.composeapp.generated.resources.back
-import untitledcasino.composeapp.generated.resources.coin_flip_title
-import untitledcasino.composeapp.generated.resources.daily_number_title
-import untitledcasino.composeapp.generated.resources.hi_lo_title
-import untitledcasino.composeapp.generated.resources.purchase_failed
-import untitledcasino.composeapp.generated.resources.purchase_success
+import untitledcasino.composeapp.generated.resources.*
 
 @Composable
 fun App(
@@ -87,11 +76,11 @@ fun App(
     val destination = navBackStackEntry?.destination
 
     val topBarTitle = when {
-        destination?.hasRoute<CreditsRoute>() == true -> "Credits"
-        destination?.hasRoute<ConfirmRoute>() == true -> "Confirm Purchase"
-        destination?.hasRoute<HistoryScreenRoute>() == true -> "History"
-        destination?.hasRoute<GameSelectionRoute>() == true -> "Game Select"
-        destination?.hasRoute<GameScreenRoute>() == true -> "Game"
+        destination?.hasRoute<CreditsRoute>() == true -> stringResource(Res.string.credits)
+        destination?.hasRoute<ConfirmRoute>() == true -> stringResource(Res.string.confirm_purchase)
+        destination?.hasRoute<HistoryScreenRoute>() == true -> stringResource(Res.string.history)
+        destination?.hasRoute<GameSelectionRoute>() == true -> stringResource(Res.string.game_select)
+        destination?.hasRoute<GameScreenRoute>() == true -> stringResource(Res.string.game)
         else -> stringResource(Res.string.app_name)
     }
 
@@ -167,7 +156,7 @@ fun App(
                                 controls = { DailyNumberControls(specificVm) }
                             )
                         }
-                        else -> error("Unreachable state")
+                        else -> error(stringResource(Res.string.unreachable_state))
                     }
 
                     GameScreen(playerRepo,gameContent, vm)
@@ -230,7 +219,14 @@ fun App(
                             HistoryScreen(
                                 historyItems = history,
                                 itemContent = { purchase ->
-                                    HistoryRow("Purchase: ${formatWithCommas(purchase.credits.toString())} credits for ${formatPrice(purchase.priceInCents)}\n${formatEpochMillis(purchase.timestamp)}")
+                                    HistoryRow(
+                                        stringResource(
+                                            Res.string.history_purchase,
+                                            formatWithCommas(purchase.credits.toString()),
+                                            formatPrice(purchase.priceInCents),
+                                            formatEpochMillis(purchase.timestamp),
+                                        )
+                                    )
                                 }
                             )
                         }
@@ -240,7 +236,15 @@ fun App(
                             HistoryScreen(
                                 historyItems = history,
                                 itemContent = { gameplay ->
-                                    HistoryRow("${gameplay.gameName} - Bet: ${formatWithCommas(gameplay.bet.toString())} - Reward: ${formatWithCommas(gameplay.reward.toString())}\n${formatEpochMillis(gameplay.timestamp)}")
+                                    HistoryRow(
+                                        stringResource(
+                                            Res.string.history_gameplay,
+                                            gameplay.gameName,
+                                            formatWithCommas(gameplay.bet.toString()),
+                                            formatWithCommas(gameplay.reward.toString()),
+                                            formatEpochMillis(gameplay.timestamp),
+                                        )
+                                    )
                                 }
                             )
                         }
@@ -264,9 +268,10 @@ private fun TopBar(
                 fontWeight = FontWeight.Bold,
             )
         },
-        colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+        colors = TopAppBarDefaults.topAppBarColors(
             containerColor = MaterialTheme.colorScheme.primary,
             titleContentColor = MaterialTheme.colorScheme.onPrimary,
+            navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
         ),
         navigationIcon = {
             if (back != null) {

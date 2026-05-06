@@ -10,9 +10,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.withContext
-import kotlin.time.Clock
 
-const val INIT_CREDITS = 100
+const val INIT_CREDITS = 1000
 
 class PlayerRepo(private val playerDao: PlayerDao) {
     val credits: Flow<Int?> = playerDao.getPlayerCredits()
@@ -26,7 +25,7 @@ class PlayerRepo(private val playerDao: PlayerDao) {
 
             if (currentCredits == null) {
                 val rowsInserted = playerDao.insertInitialPlayer(
-                    PlayerEntity(id = 1, credits = 1000)
+                    PlayerEntity(id = 1, credits = INIT_CREDITS)
                 )
                 println("First run: Created player with ID: $rowsInserted")
             } else {
@@ -42,7 +41,7 @@ class PlayerRepo(private val playerDao: PlayerDao) {
     suspend fun addCredits(newCredits: Int) {
         val currentBalance = credits.first() ?: 0
         val newBalance = currentBalance + newCredits
-        val rowsAffected = playerDao.setPlayerCredits(newBalance)
+        playerDao.setPlayerCredits(newBalance)
     }
 
     suspend fun tryCharge(cost: Int): Boolean {

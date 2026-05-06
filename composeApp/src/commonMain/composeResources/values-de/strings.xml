@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<resources>
+    <string name="app_name">Casino ohne Titel</string>
+    <string name="back">Zurück</string>
+    <string name="balance">Gleichgewicht</string>
+    <string name="games">Spiele</string>
+    <string name="credits">Credits</string>
+    <string name="cancel">Stornieren</string>
+    <string name="purchase_success">Gekauft %1$s guthaben für %2$s</string>
+    <string name="purchase_failed">Der Kauf ist fehlgeschlagen</string>
+    <string name="coin_flip_title">Münzwurf</string>
+    <string name="hi_lo_title">Hi-Lo</string>
+    <string name="daily_number_title">Tägliche Nummer</string>
+    <string name="confirm_purchase">Bestätigen Sie den Kauf</string>
+    <string name="history">Geschichte</string>
+    <string name="game_select">Spielauswahl</string>
+    <string name="game">Spiel</string>
+    <string name="history_purchase">%1$s Credits für %2$s\n%3$s</string>
+    <string name="history_gameplay">%1$s - Wette: %2$s - Belohnung: %3$s\n%4$s</string>
+    <string name="play">SPIELEN</string>
+    <string name="roll">ROLLEN</string>
+    <string name="daily_goal">TÄGLICHES ZIEL</string>
+    <string name="roll_closest">Wer am nächsten am Ziel landet, gewinnt!</string>
+    <string name="heads">Köpfe</string>
+    <string name="tails">Schwänze</string>
+    <string name="winner">GEWINNER*INNEN!</string>
+    <string name="try_again">VERSUCHEN SIE ES ERNEUT!</string>
+    <string name="higher">HÖHER</string>
+    <string name="lower">UNTERE</string>
+    <string name="cash_out">AUSZAHLUNG</string>
+    <string name="congrats">HERZLICHEN GLÜCKWUNSCH, SIE HABEN GEWONNEN!</string>
+    <string name="nice_job">SCHÖNE ARBEIT!</string>
+    <string name="you_lose">Du verlierst!</string>
+    <string name="failed_daily_goal">Das Tagesziel konnte nicht abgerufen werden.</string>
+    <string name="you_won_credits">Du hast %1$s Credits gewonnen!</string>
+    <string name="bet">Wette:</string>
+    <string name="enter">Eingeben</string>
+    <string name="button">Button</string>
+    <string name="current_bet">Aktuelle Wette: %1$s</string>
+    <string name="valid_bet">Bitte geben Sie einen gültigen Einsatz ein.</string>
+    <string name="insufficient_credits">Nicht genügend Guthaben!</string>
+    <string name="unreachable_state">Nicht erreichbarer Zustand</string>
+    <string name="confirm_purchase_of_credits">Kauf von %1$s Credits bestätigen?</string>
+    <string name="amount_of_credits">%1$s Credits</string>
+    <string name="no_history">Keine Historie verfügbar</string>
+    <string name="get_help">Holen Sie sich Hilfe</string>
+</resources>

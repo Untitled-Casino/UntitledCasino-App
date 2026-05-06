@@ -15,10 +15,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.room.Entity
-import com.example.untitledcasino.data.GameplayEntity
-import com.example.untitledcasino.data.PurchaseEntity
 import kotlinx.serialization.Serializable
+import org.jetbrains.compose.resources.stringResource
+import untitledcasino.composeapp.generated.resources.*
 
 @Serializable
 enum class HistoryType {
@@ -47,7 +46,11 @@ fun <T> HistoryScreen(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center,
             ) {
-                Text("No history available")
+                Text(
+                    text = stringResource(Res.string.no_history),
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.onBackground,
+                )
             }
         } else {
             LazyColumn(

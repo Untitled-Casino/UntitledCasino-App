@@ -4,7 +4,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 
-class HiLoVM() : GameVM() {
+class HiLoVM : GameVM() {
     var currentCard by mutableStateOf<Int?>(null)
     var nextCard by mutableStateOf<Int?>(null)
 
