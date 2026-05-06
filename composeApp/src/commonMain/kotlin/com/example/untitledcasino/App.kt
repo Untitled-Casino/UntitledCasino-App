@@ -166,7 +166,7 @@ fun App(
                                 controls = { DailyNumberControls(specificVm) }
                             )
                         }
-                        else -> TODO("DO THIS")
+                        else -> error("Unreachable state")
                     }
 
                     GameScreen(playerRepo,gameContent, vm)
