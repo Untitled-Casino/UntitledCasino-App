@@ -94,10 +94,14 @@ fun App(
                 startDestination = HomeRoute,
                 modifier = Modifier.padding(innerPadding)
             ) {
+                composable<GetHelpRoute> {
+                    CasinoWebView()
+                }
                 composable<HomeRoute> {
                     HomeScreen(
                         onGameSelection = { navController.navigate(GameSelectionRoute) },
                         onOpenCredits = { navController.navigate(CreditsRoute) },
+                        onGetHelp = { navController.navigate(GetHelpRoute) },
                         playerRepo = playerRepo,
                     )
                 }

@@ -21,6 +21,7 @@ data object HomeRoute {
 fun HomeScreen(
     onGameSelection: () -> Unit,
     onOpenCredits: () -> Unit,
+    onGetHelp: () -> Unit,
     playerRepo: PlayerRepo,
 ) {
     Column(
@@ -33,6 +34,10 @@ fun HomeScreen(
         }
         TextButton(onClick = onOpenCredits) {
             Text("Credits")
+        }
+
+        TextButton(onClick = onGetHelp) {
+            Text("Get Help")
         }
     }
 }
