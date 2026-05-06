@@ -6,11 +6,15 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -20,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import kotlinx.serialization.Serializable
@@ -39,43 +44,47 @@ data object GameSelectionRoute {
 
 }
 
+
 @Composable
 fun GameSelectionScreen(
+    games: List<GameInfo>,
     onStartGame: (String) -> Unit,
     onHistory: () -> Unit,
 ) {
     Column(
-        verticalArrangement = Arrangement.spacedBy(8.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp),
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center
     ) {
-        GameCard(
-            title = stringResource(Res.string.coin_flip_title),
-            resource = Res.drawable.coin_flip_image,
-            gameID = "coinflip",
-            ) { id -> onStartGame(id) }
-        GameCard(
-            title = stringResource(Res.string.hi_lo_title),
-            resource = Res.drawable.hi_lo_image,
-            gameID = "hilo",
-        ) { id -> onStartGame(id) }
-        GameCard(
-            title = stringResource(Res.string.daily_number_title),
-            resource = Res.drawable.piggy_bank,
-            gameID = "dailynumber",
-        ) { id -> onStartGame(id) }
 
-        Spacer(Modifier.weight(1f))
-
-        Button(
-            onClick = onHistory
+        LazyColumn(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            contentPadding = PaddingValues(16.dp)
         ) {
-            Text(
-                text = "History",
-                fontWeight = FontWeight.Bold,
-            )
+
+
+            items(items = games) {
+                    game ->
+                GameCard(
+                    title = stringResource(game.title),
+                    resource = game.resource,
+                    gameID = game.gameID,
+                ) { id -> onStartGame(id) }
+            }
+
+            item {
+                Spacer(modifier = Modifier.height(32.dp))
+
+                Button(
+                    onClick = onHistory
+                ) {
+                    Text(
+                        text = "History",
+                        fontWeight = FontWeight.Bold,
+                    )
+                }
+            }
         }
     }
 }
@@ -109,7 +118,7 @@ fun GamePicture(
         modifier = modifier
             .fillMaxWidth()
             .height(150.dp)
-            .padding(8.dp),
+            .padding(32.dp),
         contentAlignment = Alignment.Center,
     ) {
         Image(

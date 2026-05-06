@@ -26,6 +26,7 @@ import com.example.untitledcasino.game.CoinFlipControls
 import com.example.untitledcasino.game.CoinFlipVisuals
 import com.example.untitledcasino.game.DailyNumberControls
 import com.example.untitledcasino.game.DailyNumberVisuals
+import com.example.untitledcasino.game.GAMES
 import com.example.untitledcasino.game.GameContent
 import com.example.untitledcasino.game.GameScreen
 import com.example.untitledcasino.game.GameScreenRoute
@@ -100,6 +101,7 @@ fun App(
                 TopBar(
                     back = if (navBackStackEntry?.destination?.hasRoute<HomeRoute>() == true) null else ({ navController.navigateUp() }),
                     text = topBarTitle,
+
                 )
             }
         ) { innerPadding ->
@@ -121,6 +123,7 @@ fun App(
                 }
                 composable<GameSelectionRoute> {
                     GameSelectionScreen(
+                        games = GAMES,
                         onStartGame = { selectedType -> navController.navigate(GameScreenRoute(gameType = selectedType)) },
                         onHistory = {
                             navController.navigate(HistoryScreenRoute(type = HistoryType.GAMEPLAY))

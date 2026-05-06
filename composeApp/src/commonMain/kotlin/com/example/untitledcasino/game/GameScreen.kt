@@ -5,7 +5,9 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
@@ -18,6 +20,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ModifierLocalBeyondBoundsLayout
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -80,7 +83,7 @@ fun BetInput(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
+                .padding(vertical = 8.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
@@ -96,24 +99,29 @@ fun BetInput(
                         betAmount = newValue
                     }
                 },
-                modifier = Modifier.weight(1f),
+                modifier = Modifier
+                    .weight(2f)
+                    .height(60.dp),
                 placeholder = { Text("0") },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 singleLine = true
             )
 
-            Button(
+            ChoiceBox(
+                text = "Enter",
+                modifier = Modifier.weight(1f),
                 onClick = {
                     val amount = betAmount.toIntOrNull() ?: 0
                     betAmount = ""
                     onBetEntered(amount)
                 },
-                enabled = betAmount.isNotEmpty()
-            ) {
-                Text("Enter")
-            }
+                isEnabled = betAmount.isNotEmpty()
+            )
         }
 
-        Text("Current Bet: ${vm.betAmount}")
+        Text(
+            modifier = Modifier.fillMaxWidth(),
+            text = "Current Bet: ${vm.betAmount}"
+        )
     }
 }

@@ -17,8 +17,8 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun ChoiceBox(
     text: String,
-    isDimmed: Boolean,
-    isEnabled: Boolean,
+    isDimmed: Boolean = false,
+    isEnabled: Boolean = true,
     modifier: Modifier = Modifier,
     baseContainerColor: Color = MaterialTheme.colorScheme.primary,
     baseTextColor: Color = MaterialTheme.colorScheme.onPrimary,
