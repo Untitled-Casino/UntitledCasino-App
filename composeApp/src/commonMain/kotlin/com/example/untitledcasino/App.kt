@@ -210,7 +210,7 @@ fun App(
                                 title = "Purchase History",
                                 historyItems = history,
                                 itemContent = { purchase ->
-                                    PurchaseHistoryRow(purchase)
+                                    HistoryRow("Purchase: ${formatWithCommas(purchase.credits.toString())} credits for ${formatPrice(purchase.priceInCents)} at ${formatEpochMillis(purchase.timestamp)}")
                                 }
                             )
                         }
@@ -221,7 +221,7 @@ fun App(
                                 title = "Game History",
                                 historyItems = history,
                                 itemContent = { gameplay ->
-                                    GameplayHistoryRow(gameplay)
+                                    HistoryRow("${gameplay.gameName} - Bet: ${formatWithCommas(gameplay.bet.toString())} - Reward: ${formatWithCommas(gameplay.reward.toString())} at ${formatEpochMillis(gameplay.timestamp)}")
                                 }
                             )
                         }

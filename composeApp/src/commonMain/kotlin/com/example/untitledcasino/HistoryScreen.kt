@@ -70,19 +70,18 @@ fun <T> HistoryScreen(
 }
 
 @Composable
-fun PurchaseHistoryRow(purchase: PurchaseEntity) {
+fun HistoryRow(message: String) {
     Card(
-        modifier = Modifier.fillMaxWidth().padding(8.dp),
+        modifier = Modifier.fillMaxWidth(),
+        colors = androidx.compose.material3.CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface,
+            contentColor = MaterialTheme.colorScheme.onSurface
+        )
     ) {
-        Text("Purchase: ${formatWithCommas(purchase.credits.toString())} credits for ${formatPrice(purchase.priceInCents)} at ${formatEpochMillis(purchase.timestamp)}")
-    }
-}
-
-@Composable
-fun GameplayHistoryRow(gameplay: GameplayEntity) {
-    Card(
-        modifier = Modifier.fillMaxWidth().padding(8.dp),
-    ) {
-        Text("${gameplay.gameName} - Bet: ${formatWithCommas(gameplay.bet.toString())} - Reward: ${formatWithCommas(gameplay.reward.toString())} at ${formatEpochMillis(gameplay.timestamp)}")
+        Text(
+            text = message,
+            modifier = Modifier.padding(8.dp),
+            style = MaterialTheme.typography.bodyLarge
+        )
     }
 }
