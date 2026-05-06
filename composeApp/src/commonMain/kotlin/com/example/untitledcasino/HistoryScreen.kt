@@ -35,7 +35,6 @@ data class HistoryScreenRoute (
 
 @Composable
 fun <T> HistoryScreen(
-    title: String,
     historyItems: List<T>,
     itemContent: @Composable (T) -> Unit,
 ) {
@@ -43,12 +42,6 @@ fun <T> HistoryScreen(
         modifier = Modifier.fillMaxSize().padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Text(
-            text = title,
-            style = MaterialTheme.typography.headlineMedium,
-            modifier = Modifier.padding(bottom = 16.dp),
-        )
-
         if (historyItems.isEmpty()) {
             Box(
                 modifier = Modifier.fillMaxSize(),

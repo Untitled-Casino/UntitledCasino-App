@@ -70,18 +70,8 @@ fun CreditsScreen(
     ) {
         CreditBalance(playerRepo)
         Spacer(Modifier.height(16.dp))
-        Button(
-            onClick = onHistory
-        ) {
-            Text(
-                text = "History",
-                fontWeight = FontWeight.Bold,
-            )
-        }
-        Spacer(Modifier.height(16.dp))
         LazyVerticalGrid(
             columns = GridCells.Fixed(3),
-            modifier = Modifier.weight(1f)
         ) {
             items(creditPurchaseOptions) { option ->
                 CreditPurchaseOptionItem(
@@ -95,6 +85,15 @@ fun CreditsScreen(
             }
         }
         Spacer(Modifier.height(16.dp))
+        Button(
+            onClick = onHistory
+        ) {
+            Text(
+                text = "History",
+                fontWeight = FontWeight.Bold,
+            )
+        }
+        Spacer(Modifier.weight(1f))
         currentOption?.let {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,

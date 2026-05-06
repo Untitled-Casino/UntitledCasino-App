@@ -6,6 +6,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -50,14 +51,6 @@ fun GameSelectionScreen(
             .fillMaxWidth()
             .padding(16.dp),
     ) {
-        Text(
-            text = "Pick A Game!",
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp),
-            style = MaterialTheme.typography.headlineLarge,
-            textAlign = TextAlign.Center
-        )
         GameCard(
             title = stringResource(Res.string.coin_flip_title),
             resource = Res.drawable.coin_flip_image,
@@ -73,6 +66,8 @@ fun GameSelectionScreen(
             resource = Res.drawable.piggy_bank,
             gameID = "dailynumber",
         ) { id -> onStartGame(id) }
+
+        Spacer(Modifier.weight(1f))
 
         Button(
             onClick = onHistory
