@@ -13,7 +13,8 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.compose.ui.text.font.FontWeight
+import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -60,7 +61,6 @@ fun App(
     database: CasinoDatabase,
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
-    val navController = rememberNavController()
     val scope = rememberCoroutineScope()
 
     val playerDao = database.getDao()
@@ -78,15 +78,29 @@ fun App(
         }
     }
 
+    val navController = rememberNavController()
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val destination = navBackStackEntry?.destination
+
+    val topBarTitle = when {
+        destination?.hasRoute<HomeRoute>() == true -> "Home"
+        destination?.hasRoute<CreditsRoute>() == true -> "Credits"
+        destination?.hasRoute<ConfirmRoute>() == true -> "Confirm Purchase"
+        destination?.hasRoute<HistoryScreenRoute>() == true -> "History"
+        destination?.hasRoute<GameSelectionRoute>() == true -> "Game Select"
+        destination?.hasRoute<GameScreenRoute>() == true -> "Game"
+        else -> stringResource(Res.string.app_name)
+    }
+
     UntitledCasinoTheme {
         Scaffold(
             snackbarHost = { SnackbarHost(snackbarHostState) },
             containerColor = MaterialTheme.colorScheme.background,
             topBar = {
-                val curBackStackEntry by navController.currentBackStackEntryAsState()
-                val curDestination = curBackStackEntry?.destination
-                val onHomeScreen = curDestination?.hasRoute<HomeRoute>() == true
-                TopBar(back = if (onHomeScreen) null else ({ navController.navigateUp() }))
+                TopBar(
+                    back = if (navBackStackEntry?.destination?.hasRoute<HomeRoute>() == true) null else ({ navController.navigateUp() }),
+                    text = topBarTitle,
+                )
             }
         ) { innerPadding ->
             NavHost(
@@ -153,9 +167,6 @@ fun App(
                     GameScreen(playerRepo,gameContent, vm)
                 }
                 composable<CreditsRoute> {
-                    LaunchedEffect(Unit) {
-                        playerRepo.addCredits(100)
-                    }
                     CreditsScreen(
                         onPurchase = { selectedOption ->
                             navController.navigate(ConfirmRoute(selectedOption.creditsReceive))
@@ -211,10 +222,9 @@ fun App(
                             val history by playerRepo.purchaseHistory.collectAsState(initial = emptyList())
 
                             HistoryScreen(
-                                title = "Purchase History",
                                 historyItems = history,
                                 itemContent = { purchase ->
-                                    PurchaseHistoryRow(purchase)
+                                    HistoryRow("Purchase: ${formatWithCommas(purchase.credits.toString())} credits for ${formatPrice(purchase.priceInCents)}\n${formatEpochMillis(purchase.timestamp)}")
                                 }
                             )
                         }
@@ -222,10 +232,9 @@ fun App(
                             val history by playerRepo.gameplayHistory.collectAsState(initial = emptyList())
 
                             HistoryScreen(
-                                title = "Game History",
                                 historyItems = history,
                                 itemContent = { gameplay ->
-                                    GameplayHistoryRow(gameplay)
+                                    HistoryRow("${gameplay.gameName} - Bet: ${formatWithCommas(gameplay.bet.toString())} - Reward: ${formatWithCommas(gameplay.reward.toString())}\n${formatEpochMillis(gameplay.timestamp)}")
                                 }
                             )
                         }
@@ -238,9 +247,17 @@ fun App(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun TopBar(back: (() -> Unit)? = null) {
+private fun TopBar(
+    back: (() -> Unit)? = null,
+    text: String,
+) {
     TopAppBar(
-        title = { Text(stringResource(Res.string.app_name)) },
+        title = {
+            Text(
+                text =  text,
+                fontWeight = FontWeight.Bold,
+            )
+        },
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = MaterialTheme.colorScheme.primary,
             titleContentColor = MaterialTheme.colorScheme.onPrimary,

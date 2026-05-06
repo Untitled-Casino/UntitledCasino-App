@@ -35,7 +35,6 @@ data class HistoryScreenRoute (
 
 @Composable
 fun <T> HistoryScreen(
-    title: String,
     historyItems: List<T>,
     itemContent: @Composable (T) -> Unit,
 ) {
@@ -43,12 +42,6 @@ fun <T> HistoryScreen(
         modifier = Modifier.fillMaxSize().padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Text(
-            text = title,
-            style = MaterialTheme.typography.headlineMedium,
-            modifier = Modifier.padding(bottom = 16.dp),
-        )
-
         if (historyItems.isEmpty()) {
             Box(
                 modifier = Modifier.fillMaxSize(),
@@ -70,19 +63,18 @@ fun <T> HistoryScreen(
 }
 
 @Composable
-fun PurchaseHistoryRow(purchase: PurchaseEntity) {
+fun HistoryRow(message: String) {
     Card(
-        modifier = Modifier.fillMaxWidth().padding(8.dp),
+        modifier = Modifier.fillMaxWidth(),
+        colors = androidx.compose.material3.CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surface,
+            contentColor = MaterialTheme.colorScheme.onSurface
+        )
     ) {
-        Text("Purchase: ${formatWithCommas(purchase.credits.toString())} credits for ${formatPrice(purchase.priceInCents)} at ${formatEpochMillis(purchase.timestamp)}")
-    }
-}
-
-@Composable
-fun GameplayHistoryRow(gameplay: GameplayEntity) {
-    Card(
-        modifier = Modifier.fillMaxWidth().padding(8.dp),
-    ) {
-        Text("${gameplay.gameName} - Bet: ${formatWithCommas(gameplay.bet.toString())} - Reward: ${formatWithCommas(gameplay.reward.toString())} at ${formatEpochMillis(gameplay.timestamp)}")
+        Text(
+            text = message,
+            modifier = Modifier.padding(8.dp),
+            style = MaterialTheme.typography.bodyLarge
+        )
     }
 }
