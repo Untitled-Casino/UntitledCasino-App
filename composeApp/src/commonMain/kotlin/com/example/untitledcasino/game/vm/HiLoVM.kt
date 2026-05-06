@@ -38,7 +38,7 @@ class HiLoVM() : GameVM() {
 
 
         val drawn = (1..13).random()
-        roundWon = if (higher) drawn > current else drawn <= current
+        roundWon = if (higher) drawn > current else drawn < current
 
         nextCard = drawn
     }

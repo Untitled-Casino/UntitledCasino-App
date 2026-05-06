@@ -11,6 +11,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 
@@ -22,6 +24,7 @@ fun ChoiceBox(
     modifier: Modifier = Modifier,
     baseContainerColor: Color = MaterialTheme.colorScheme.primary,
     baseTextColor: Color = MaterialTheme.colorScheme.onPrimary,
+    style: TextStyle = MaterialTheme.typography.bodyLarge,
     onClick: () -> Unit
 ) {
     Box(
@@ -43,7 +46,8 @@ fun ChoiceBox(
                 !isEnabled || isDimmed -> baseTextColor.copy(alpha = 0.5f)
                 else -> baseTextColor
             },
-            fontWeight = FontWeight.Bold
+            fontWeight = FontWeight.Bold,
+            style = style
         )
     }
 }
