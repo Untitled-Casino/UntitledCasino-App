@@ -7,9 +7,7 @@ import org.jetbrains.compose.resources.stringResource
 import untitledcasino.composeapp.generated.resources.Res
 import untitledcasino.composeapp.generated.resources.coin_flip_title
 
-class CoinFlipVM(
-    gameName: String
-) : GameVM(gameName) {
+class CoinFlipVM() : GameVM() {
     var sideSelection by mutableStateOf("")
     var lastResult by mutableStateOf("None")
     var won by mutableStateOf<Boolean?>(null)

@@ -22,11 +22,12 @@ data class DailyNumberResponse(
 )
 
 
-class DailyNumberVM(
-    gameName: String,
-    private val httpClient: HttpClient,
-) : GameVM(gameName) {
-    init {
+class DailyNumberVM() : GameVM() {
+
+    private var httpClient: HttpClient? = null
+
+    fun initClient(client: HttpClient) {
+        this.httpClient = client
         fetchDailyGoal()
     }
 
@@ -36,7 +37,7 @@ class DailyNumberVM(
     fun fetchDailyGoal() {
         viewModelScope.launch {
             try {
-                val response: DailyNumberResponse = httpClient.get("https://itchybarn.com/api/dailynumber").body()
+                val response: DailyNumberResponse = httpClient!!.get("https://itchybarn.com/api/dailynumber").body()
                 goalNumber = response.number
             } catch (e: Exception) {
                 uiMessage = "Failed to fetch daily goal"

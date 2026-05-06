@@ -6,15 +6,11 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.untitledcasino.PlayerRepo
-import com.example.untitledcasino.currentTimeMillis
-import com.example.untitledcasino.data.PurchaseEntity
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-abstract class GameVM(
-    gameName: String
-) : ViewModel() {
+abstract class GameVM() : ViewModel() {
     protected var playerRepo: PlayerRepo? = null
     var betAmount by mutableStateOf(0)
     var isBusy by mutableStateOf(false)
@@ -25,12 +21,9 @@ abstract class GameVM(
 
     var uiMessage by mutableStateOf("")
 
-    init {
-        _activeGame.value = gameName
-    }
-
-    open fun setup(repo: PlayerRepo) {
+    open fun setup(repo: PlayerRepo, stringResource: String) {
         this.playerRepo = repo
+        this._activeGame.value = stringResource
     }
 
     protected fun attemptStartGame(onSuccess: () -> Unit) {

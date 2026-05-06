@@ -61,7 +61,7 @@ fun HiLoControls(vm: HiLoVM) {
             ChoiceBox(
                 text = "PLAY",
                 isDimmed = false,
-                isEnabled = !vm.isBusy,
+                isEnabled = !vm.isBusy && !vm.isAnimationPlaying,
                 modifier = Modifier.fillMaxWidth(),
                 baseContainerColor = MaterialTheme.colorScheme.primaryContainer,
                 onClick = { vm.startHiLo() }
@@ -85,19 +85,23 @@ fun HiLoVisuals(vm: HiLoVM) {
 
     LaunchedEffect(vm.nextCard) {
         if (vm.nextCard != null) {
+            vm.isAnimationPlaying = true
             delay(500)
             showResultOverlay = true
             delay(1500)
             showResultOverlay = false
+            vm.isAnimationPlaying = false
             vm.completeTurn()
         }
     }
 
     LaunchedEffect(vm.gameWon) {
         if (vm.gameWon) {
+            vm.isAnimationPlaying = true
             showResultOverlay = true
             delay(4000)
             showResultOverlay = false
+            vm.isAnimationPlaying = false
         }
     }
 

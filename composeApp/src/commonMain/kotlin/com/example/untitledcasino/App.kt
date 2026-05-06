@@ -14,7 +14,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
-import androidx.navigation.NavBackStackEntry
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -135,8 +135,8 @@ fun App(
 
                     val (vm, gameContent) = when (game.gameType) {
                         "coinflip" -> {
-                            val specificVm = CoinFlipVM(stringResource(Res.string.coin_flip_title))
-                            specificVm.setup(playerRepo)
+                            val specificVm: CoinFlipVM = viewModel()
+                            specificVm.setup(playerRepo, stringResource(Res.string.coin_flip_title))
                             specificVm to GameContent(
                                 title = specificVm.activeGame.value,
                                 viewModel = specificVm,
@@ -145,8 +145,8 @@ fun App(
                             )
                         }
                         "hilo" -> {
-                            val specificVm = HiLoVM(stringResource(Res.string.hi_lo_title))
-                            specificVm.setup(playerRepo)
+                            val specificVm: HiLoVM = viewModel()
+                            specificVm.setup(playerRepo, stringResource(Res.string.hi_lo_title))
                             specificVm to GameContent(
                                 title = specificVm.activeGame.value,
                                 viewModel = specificVm,
@@ -155,8 +155,9 @@ fun App(
                             )
                         }
                         "dailynumber" -> {
-                            val specificVm = DailyNumberVM(stringResource(Res.string.daily_number_title), httpClient)
-                            specificVm.setup(playerRepo)
+                            val specificVm: DailyNumberVM = viewModel()
+                            specificVm.setup(playerRepo, stringResource(Res.string.daily_number_title))
+                            specificVm.initClient(httpClient)
                             specificVm to GameContent(
                                 title = specificVm.activeGame.value,
                                 viewModel = specificVm,
