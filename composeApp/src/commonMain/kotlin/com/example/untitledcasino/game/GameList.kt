@@ -14,16 +14,16 @@ val GAMES = listOf(
     GameInfo(
         title = Res.string.coin_flip_title,
         resource = Res.drawable.coin_flip_image,
-        gameID = "coinflip"
+        gameID = "coinflip",
     ),
     GameInfo(
         title = Res.string.hi_lo_title,
         resource = Res.drawable.hi_lo_image,
-        gameID = "hilo"
+        gameID = "hilo",
     ),
     GameInfo(
         title = Res.string.daily_number_title,
         resource = Res.drawable.daily_number_image,
-        gameID = "dailynumber"
-    )
+        gameID = "dailynumber",
+    ),
 )

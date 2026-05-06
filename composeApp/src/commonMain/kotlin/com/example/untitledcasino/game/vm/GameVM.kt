@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.getString
 import untitledcasino.composeapp.generated.resources.*
 
-abstract class GameVM() : ViewModel() {
+abstract class GameVM : ViewModel() {
     protected var playerRepo: PlayerRepo? = null
     var betAmount by mutableStateOf(0)
     var isBusy by mutableStateOf(false)

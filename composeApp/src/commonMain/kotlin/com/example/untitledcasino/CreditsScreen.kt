@@ -34,9 +34,7 @@ import org.jetbrains.compose.resources.stringResource
 import untitledcasino.composeapp.generated.resources.*
 
 @Serializable
-data object CreditsRoute {
-
-}
+data object CreditsRoute
 
 data class CreditPurchaseOption(
     val creditsReceive: Int,
@@ -79,13 +77,13 @@ fun CreditsScreen(
                         scope.launch {
                             currentOption = option
                         }
-                    }
+                    },
                 )
             }
         }
         Spacer(Modifier.height(16.dp))
         Button(
-            onClick = onHistory
+            onClick = onHistory,
         ) {
             Text(
                 text = stringResource(Res.string.history),
@@ -100,7 +98,7 @@ fun CreditsScreen(
                 Text(
                     text = stringResource(
                         Res.string.amount_of_credits,
-                        formatWithCommas(currentOption!!.creditsReceive.toString())
+                        formatWithCommas(currentOption!!.creditsReceive.toString()),
                     ),
                     color = MaterialTheme.colorScheme.onBackground,
                 )
@@ -111,7 +109,7 @@ fun CreditsScreen(
                     colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.primary,
                         contentColor = MaterialTheme.colorScheme.onPrimary,
-                    )
+                    ),
                 ) {
                     Text(
                         text = "Purchase",
@@ -126,18 +124,18 @@ fun CreditsScreen(
 @Composable
 fun CreditPurchaseOptionItem(
     option: CreditPurchaseOption,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
     Surface(
         onClick = onClick,
         color = MaterialTheme.colorScheme.primary,
         shape = RoundedCornerShape(16.dp),
-        modifier = Modifier.padding(4.dp).aspectRatio(1f)
+        modifier = Modifier.padding(4.dp).aspectRatio(1f),
     ) {
         Column(
             modifier = Modifier.padding(8.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.SpaceEvenly
+            verticalArrangement = Arrangement.SpaceEvenly,
         ) {
             Text(
                 text = formatWithCommas(option.creditsReceive.toString()),

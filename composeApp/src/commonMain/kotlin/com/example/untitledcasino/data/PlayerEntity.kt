@@ -4,8 +4,8 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity
-data class PlayerEntity (
+data class PlayerEntity(
     @PrimaryKey(autoGenerate = false)
     val id: Int = 1,
-    val credits: Int = 0
+    val credits: Int = 0,
 )

@@ -11,4 +11,3 @@ val CasinoGrey = Color(0xFF242424)
 val PlayGreen = Color(0xFF0c9631)
 
 val CashOutOrange = Color(0xFFe67e22)
-

@@ -10,7 +10,7 @@ import kotlinx.coroutines.IO
 
 @Database(
     entities = [
-        PlayerEntity::class, PurchaseEntity::class, GameplayEntity::class
+        PlayerEntity::class, PurchaseEntity::class, GameplayEntity::class,
     ],
     version = 5,
 )

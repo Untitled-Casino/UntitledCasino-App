@@ -92,14 +92,13 @@ fun App(
                 TopBar(
                     back = if (navBackStackEntry?.destination?.hasRoute<HomeRoute>() == true) null else ({ navController.navigateUp() }),
                     text = topBarTitle,
-
                 )
-            }
+            },
         ) { innerPadding ->
             NavHost(
                 navController = navController,
                 startDestination = HomeRoute,
-                modifier = Modifier.padding(innerPadding)
+                modifier = Modifier.padding(innerPadding),
             ) {
                 composable<GetHelpRoute> {
                     CasinoWebView()
@@ -132,9 +131,10 @@ fun App(
                                 title = specificVm.activeGame.value,
                                 viewModel = specificVm,
                                 visuals = { CoinFlipVisuals(specificVm) },
-                                controls = { CoinFlipControls(specificVm) }
+                                controls = { CoinFlipControls(specificVm) },
                             )
                         }
+
                         "hilo" -> {
                             val specificVm: HiLoVM = viewModel()
                             specificVm.setup(playerRepo, stringResource(Res.string.hi_lo_title))
@@ -142,9 +142,10 @@ fun App(
                                 title = specificVm.activeGame.value,
                                 viewModel = specificVm,
                                 visuals = { HiLoVisuals(specificVm) },
-                                controls = { HiLoControls(specificVm) }
+                                controls = { HiLoControls(specificVm) },
                             )
                         }
+
                         "dailynumber" -> {
                             val specificVm: DailyNumberVM = viewModel()
                             specificVm.setup(playerRepo, stringResource(Res.string.daily_number_title))
@@ -153,13 +154,16 @@ fun App(
                                 title = specificVm.activeGame.value,
                                 viewModel = specificVm,
                                 visuals = { DailyNumberVisuals(specificVm) },
-                                controls = { DailyNumberControls(specificVm) }
+                                controls = { DailyNumberControls(specificVm) },
                             )
                         }
-                        else -> error(stringResource(Res.string.unreachable_state))
+
+                        else -> {
+                            error(stringResource(Res.string.unreachable_state))
+                        }
                     }
 
-                    GameScreen(playerRepo,gameContent, vm)
+                    GameScreen(playerRepo, gameContent, vm)
                 }
                 composable<CreditsRoute> {
                     CreditsScreen(
@@ -169,7 +173,7 @@ fun App(
                         onHistory = {
                             navController.navigate(HistoryScreenRoute(type = HistoryType.PURCHASE))
                         },
-                        playerRepo = playerRepo
+                        playerRepo = playerRepo,
                     )
                 }
                 composable<ConfirmRoute> { navBackStackEntry ->
@@ -225,11 +229,12 @@ fun App(
                                             formatWithCommas(purchase.credits.toString()),
                                             formatPrice(purchase.priceInCents),
                                             formatEpochMillis(purchase.timestamp),
-                                        )
+                                        ),
                                     )
-                                }
+                                },
                             )
                         }
+
                         HistoryType.GAMEPLAY -> {
                             val history by playerRepo.gameplayHistory.collectAsState(initial = emptyList())
 
@@ -243,9 +248,9 @@ fun App(
                                             formatWithCommas(gameplay.bet.toString()),
                                             formatWithCommas(gameplay.reward.toString()),
                                             formatEpochMillis(gameplay.timestamp),
-                                        )
+                                        ),
                                     )
-                                }
+                                },
                             )
                         }
                     }
@@ -261,17 +266,17 @@ private fun TopBar(
     back: (() -> Unit)? = null,
     text: String,
 ) {
-    CenterAlignedTopAppBar (
+    CenterAlignedTopAppBar(
         title = {
             Text(
-                text =  text,
+                text = text,
                 fontWeight = FontWeight.Bold,
             )
         },
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = MaterialTheme.colorScheme.primary,
             titleContentColor = MaterialTheme.colorScheme.onPrimary,
-            navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
+            navigationIconContentColor = MaterialTheme.colorScheme.onPrimary,
         ),
         navigationIcon = {
             if (back != null) {

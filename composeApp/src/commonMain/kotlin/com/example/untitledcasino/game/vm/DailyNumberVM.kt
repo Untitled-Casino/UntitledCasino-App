@@ -16,12 +16,10 @@ import kotlin.math.abs
 
 @Serializable
 data class DailyNumberResponse(
-    val number: Int
+    val number: Int,
 )
 
-
 class DailyNumberVM : GameVM() {
-
     private var httpClient: HttpClient? = null
 
     fun initClient(client: HttpClient) {

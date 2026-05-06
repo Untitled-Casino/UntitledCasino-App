@@ -22,15 +22,13 @@ import untitledcasino.composeapp.generated.resources.*
 @Serializable
 enum class HistoryType {
     PURCHASE,
-    GAMEPLAY
+    GAMEPLAY,
 }
 
 @Serializable
-data class HistoryScreenRoute (
-    val type: HistoryType
-){
-
-}
+data class HistoryScreenRoute(
+    val type: HistoryType,
+)
 
 @Composable
 fun <T> HistoryScreen(
@@ -71,13 +69,13 @@ fun HistoryRow(message: String) {
         modifier = Modifier.fillMaxWidth(),
         colors = androidx.compose.material3.CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surface,
-            contentColor = MaterialTheme.colorScheme.onSurface
-        )
+            contentColor = MaterialTheme.colorScheme.onSurface,
+        ),
     ) {
         Text(
             text = message,
             modifier = Modifier.padding(8.dp),
-            style = MaterialTheme.typography.bodyLarge
+            style = MaterialTheme.typography.bodyLarge,
         )
     }
 }

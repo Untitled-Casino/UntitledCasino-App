@@ -23,14 +23,14 @@ import untitledcasino.composeapp.generated.resources.*
 
 @Composable
 fun CreditBalance(
-    playerRepo: PlayerRepo
+    playerRepo: PlayerRepo,
 ) {
     val credits by playerRepo.credits.collectAsState(0)
 
     Surface(
         color = MaterialTheme.colorScheme.primary,
         shape = RoundedCornerShape(16.dp),
-        modifier = Modifier.padding(8.dp)
+        modifier = Modifier.padding(8.dp),
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -39,7 +39,7 @@ fun CreditBalance(
                 painterResource(Res.drawable.piggy_bank),
                 contentDescription = stringResource(Res.string.balance),
                 modifier = Modifier.size(48.dp),
-                tint = androidx.compose.ui.graphics.Color.Unspecified
+                tint = androidx.compose.ui.graphics.Color.Unspecified,
             )
             Spacer(modifier = Modifier.width(4.dp))
             Text(

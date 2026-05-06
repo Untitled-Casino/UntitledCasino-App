@@ -16,7 +16,7 @@ fun formatWithCommas(number: String): String {
     return result.reverse().toString()
 }
 
-fun formatPrice(number: Int) : String {
-    val stringNum = number.toString().padStart(3,'0')
+fun formatPrice(number: Int): String {
+    val stringNum = number.toString().padStart(3, '0')
     return "$${formatWithCommas(stringNum.dropLast(2))}.${stringNum.takeLast(2)}"
 }

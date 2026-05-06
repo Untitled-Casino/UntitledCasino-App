@@ -32,10 +32,7 @@ import org.jetbrains.compose.resources.stringResource
 import untitledcasino.composeapp.generated.resources.*
 
 @Serializable
-data object GameSelectionRoute {
-
-}
-
+data object GameSelectionRoute
 
 @Composable
 fun GameSelectionScreen(
@@ -45,16 +42,15 @@ fun GameSelectionScreen(
 ) {
     Column(
         modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center
+        verticalArrangement = Arrangement.Center,
     ) {
         LazyColumn(
             modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(8.dp),
-            contentPadding = PaddingValues(16.dp)
+            contentPadding = PaddingValues(16.dp),
         ) {
-            items(items = games) {
-                    game ->
+            items(items = games) { game ->
                 GameCard(
                     title = stringResource(game.title),
                     resource = game.resource,
@@ -64,7 +60,7 @@ fun GameSelectionScreen(
             item {
                 Spacer(modifier = Modifier.height(32.dp))
                 Button(
-                    onClick = onHistory
+                    onClick = onHistory,
                 ) {
                     Text(
                         text = stringResource(Res.string.history),
@@ -91,7 +87,7 @@ fun GameCard(
             text = title,
             gameID = gameID,
             modifier = Modifier.fillMaxWidth(),
-            onStartGame = onStartGame
+            onStartGame = onStartGame,
         )
     }
 }
@@ -99,7 +95,7 @@ fun GameCard(
 @Composable
 fun GamePicture(
     resource: DrawableResource,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Box(
         modifier = modifier
@@ -125,22 +121,21 @@ fun PlayButton(
     modifier: Modifier = Modifier,
     buttonColor: Color = MaterialTheme.colorScheme.primary,
     textColor: Color = MaterialTheme.colorScheme.onPrimary,
-    onStartGame: (String) -> Unit
+    onStartGame: (String) -> Unit,
 ) {
     Box(
         modifier = modifier
             .height(60.dp)
             .background(
                 color = buttonColor,
-                shape = RectangleShape
-            )
-            .clickable(onClick = { onStartGame(gameID) }),
-        contentAlignment = Alignment.Center
+                shape = RectangleShape,
+            ).clickable(onClick = { onStartGame(gameID) }),
+        contentAlignment = Alignment.Center,
     ) {
         Text(
             text = text,
             color = textColor,
-            fontWeight = FontWeight.Bold
+            fontWeight = FontWeight.Bold,
         )
     }
 }

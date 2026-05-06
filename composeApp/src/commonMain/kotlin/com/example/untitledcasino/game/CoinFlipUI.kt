@@ -41,25 +41,25 @@ import untitledcasino.composeapp.generated.resources.*
 fun CoinFlipControls(vm: CoinFlipVM) {
     Column(
         modifier = Modifier.width(360.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+        verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             ChoiceBox(
                 text = stringResource(Res.string.heads),
                 isDimmed = vm.sideSelection == "T",
                 isEnabled = !vm.isBusy,
                 modifier = Modifier.weight(1f),
-                onClick = { vm.select("H") }
+                onClick = { vm.select("H") },
             )
             ChoiceBox(
                 text = stringResource(Res.string.tails),
                 isDimmed = vm.sideSelection == "H",
                 isEnabled = !vm.isBusy,
                 modifier = Modifier.weight(1f),
-                onClick = { vm.select("T") }
+                onClick = { vm.select("T") },
             )
         }
 
@@ -69,7 +69,7 @@ fun CoinFlipControls(vm: CoinFlipVM) {
             isEnabled = !vm.isBusy && vm.sideSelection.isNotEmpty(),
             modifier = Modifier.fillMaxWidth(),
             baseContainerColor = Color(0xFF0c9631),
-            onClick = { vm.flip() }
+            onClick = { vm.flip() },
         )
     }
 }
@@ -78,7 +78,7 @@ fun CoinFlipControls(vm: CoinFlipVM) {
 fun CoinFlipVisuals(vm: CoinFlipVM) {
     val rotation = remember { Animatable(0f) }
     var showResultOverlay by remember { mutableStateOf(false) }
-    var hasWonState by remember { mutableStateOf<Boolean?>(null)}
+    var hasWonState by remember { mutableStateOf<Boolean?>(null) }
 
     LaunchedEffect(vm.isBusy) {
         if (vm.isBusy) {
@@ -86,13 +86,13 @@ fun CoinFlipVisuals(vm: CoinFlipVM) {
 
             val targetSideAngle = if (vm.lastResult == "T") 180f else 0f
 
-            //math so that rotation is consistent with VM result
+            // math so that rotation is consistent with VM result
             val baseRotation = (rotation.value / 360f).toInt() * 360f
             val totalTarget = baseRotation + 1080f + targetSideAngle
 
             rotation.animateTo(
                 targetValue = totalTarget,
-                animationSpec = tween(durationMillis = 800, easing = FastOutSlowInEasing)
+                animationSpec = tween(durationMillis = 800, easing = FastOutSlowInEasing),
             )
 
             hasWonState = vm.won
@@ -107,7 +107,7 @@ fun CoinFlipVisuals(vm: CoinFlipVM) {
 
         Box(
             modifier = Modifier.size(200.dp),
-            contentAlignment = Alignment.Center
+            contentAlignment = Alignment.Center,
         ) {
             Box(
                 modifier = Modifier
@@ -115,10 +115,9 @@ fun CoinFlipVisuals(vm: CoinFlipVM) {
                     .graphicsLayer {
                         rotationY = rotation.value
                         cameraDistance = 12f * density
-                    }
-                    .background(Color(0xFFFFD700), CircleShape)
+                    }.background(Color(0xFFFFD700), CircleShape)
                     .border(4.dp, Color(0xFFB8860B), CircleShape),
-                contentAlignment = Alignment.Center
+                contentAlignment = Alignment.Center,
             ) {
                 val normalizedRotation = (rotation.value % 360f + 360f) % 360f
                 val isBackSide = normalizedRotation in 90f..270f
@@ -130,26 +129,26 @@ fun CoinFlipVisuals(vm: CoinFlipVM) {
                     },
                     style = MaterialTheme.typography.displayMedium,
                     fontWeight = FontWeight.Bold,
-                    color = Color(0xFF8B4513)
+                    color = Color(0xFF8B4513),
                 )
             }
 
             Column {
                 AnimatedVisibility(
                     visible = showResultOverlay,
-                    enter = fadeIn() + scaleIn()
+                    enter = fadeIn() + scaleIn(),
                 ) {
                     Box(
                         modifier = Modifier
                             .fillMaxSize()
                             .background(Color.Black.copy(alpha = 0.4f)),
-                        contentAlignment = Alignment.Center
+                        contentAlignment = Alignment.Center,
                     ) {
                         Text(
                             text = if (hasWonState == true) stringResource(Res.string.winner) else stringResource(Res.string.try_again),
                             color = if (hasWonState == true) Color.Green else Color.White,
                             fontSize = 32.sp,
-                            fontWeight = FontWeight.Black
+                            fontWeight = FontWeight.Black,
                         )
                     }
                 }

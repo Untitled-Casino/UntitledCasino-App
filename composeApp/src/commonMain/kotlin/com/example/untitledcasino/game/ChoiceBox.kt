@@ -24,7 +24,7 @@ fun ChoiceBox(
     baseContainerColor: Color = MaterialTheme.colorScheme.primary,
     baseTextColor: Color = MaterialTheme.colorScheme.onPrimary,
     style: TextStyle = MaterialTheme.typography.bodyLarge,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
     Box(
         modifier = modifier
@@ -34,10 +34,9 @@ fun ChoiceBox(
                     !isEnabled || isDimmed -> baseContainerColor.copy(alpha = 0.5f)
                     else -> baseContainerColor
                 },
-                shape = RectangleShape
-            )
-            .clickable(enabled = isEnabled) { onClick() },
-        contentAlignment = Alignment.Center
+                shape = RectangleShape,
+            ).clickable(enabled = isEnabled) { onClick() },
+        contentAlignment = Alignment.Center,
     ) {
         Text(
             text = text,
@@ -46,7 +45,7 @@ fun ChoiceBox(
                 else -> baseTextColor
             },
             fontWeight = FontWeight.Bold,
-            style = style
+            style = style,
         )
     }
 }

@@ -31,9 +31,7 @@ import untitledcasino.composeapp.generated.resources.games
 import untitledcasino.composeapp.generated.resources.get_help
 
 @Serializable
-data object HomeRoute {
-
-}
+data object HomeRoute
 
 @Composable
 fun HomeScreen(
@@ -52,7 +50,7 @@ fun HomeScreen(
         Spacer(Modifier.weight(1f))
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             ChoiceBox(
                 text = stringResource(Res.string.games),
@@ -82,7 +80,6 @@ fun HomeScreen(
     }
 }
 
-
 @Composable
 fun LogoAndTitle(
     modifier: Modifier = Modifier,
@@ -90,13 +87,13 @@ fun LogoAndTitle(
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
-        modifier = modifier
+        modifier = modifier,
     ) {
         Image(
             painter = painterResource(Res.drawable.casino_logo),
             contentDescription = stringResource(Res.string.app_name),
             contentScale = ContentScale.Crop,
-            modifier = Modifier.fillMaxWidth().height(300.dp)
+            modifier = Modifier.fillMaxWidth().height(300.dp),
         )
     }
 }

@@ -36,25 +36,25 @@ import untitledcasino.composeapp.generated.resources.*
 fun HiLoControls(vm: HiLoVM) {
     Column(
         modifier = Modifier.width(360.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+        verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             ChoiceBox(
                 text = stringResource(Res.string.higher),
                 isDimmed = false,
                 isEnabled = vm.isStreakActive && !vm.isBusy,
                 modifier = Modifier.weight(1f),
-                onClick = { vm.makeGuess(higher = true) }
+                onClick = { vm.makeGuess(higher = true) },
             )
             ChoiceBox(
                 text = stringResource(Res.string.lower),
                 isDimmed = false,
                 isEnabled = vm.isStreakActive && !vm.isBusy,
                 modifier = Modifier.weight(1f),
-                onClick = { vm.makeGuess(higher = false) }
+                onClick = { vm.makeGuess(higher = false) },
             )
         }
 
@@ -65,7 +65,7 @@ fun HiLoControls(vm: HiLoVM) {
                 isEnabled = !vm.isBusy && !vm.isAnimationPlaying,
                 modifier = Modifier.fillMaxWidth(),
                 baseContainerColor = MaterialTheme.colorScheme.primaryContainer,
-                onClick = { vm.startHiLo() }
+                onClick = { vm.startHiLo() },
             )
         } else {
             ChoiceBox(
@@ -74,7 +74,7 @@ fun HiLoControls(vm: HiLoVM) {
                 isEnabled = !vm.isBusy && vm.round > 0,
                 modifier = Modifier.fillMaxWidth(),
                 baseContainerColor = MaterialTheme.colorScheme.secondaryContainer,
-                onClick = { vm.cashOut() }
+                onClick = { vm.cashOut() },
             )
         }
     }
@@ -107,11 +107,9 @@ fun HiLoVisuals(vm: HiLoVM) {
     }
 
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-
         Text(vm.uiMessage, color = Color.Red)
 
         Box(contentAlignment = Alignment.Center) {
-
             Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
                 CardBox(value = vm.currentCard ?: 0, isFaceUp = vm.isStreakActive)
                 CardBox(value = vm.nextCard ?: 0, isFaceUp = vm.nextCard != null)
@@ -123,9 +121,9 @@ fun HiLoVisuals(vm: HiLoVM) {
                         .matchParentSize()
                         .background(
                             color = Color.Black.copy(alpha = 0.6f),
-                            shape = RoundedCornerShape(8.dp)
+                            shape = RoundedCornerShape(8.dp),
                         ),
-                    contentAlignment = Alignment.Center
+                    contentAlignment = Alignment.Center,
                 ) {
                     val message = when {
                         !vm.isStreakActive && vm.gameWon -> stringResource(Res.string.congrats)
@@ -137,17 +135,16 @@ fun HiLoVisuals(vm: HiLoVM) {
                         text = message,
                         style = MaterialTheme.typography.headlineLarge.copy(
                             fontWeight = FontWeight.ExtraBold,
-                            fontSize = 32.sp
+                            fontSize = 32.sp,
                         ),
                         color = if (vm.roundWon) Color.Green else Color.Red,
-                        textAlign = TextAlign.Center
+                        textAlign = TextAlign.Center,
                     )
                 }
             }
         }
     }
 }
-
 
 fun getRank(value: Int): String = when (value) {
     1 -> "A"
@@ -169,10 +166,9 @@ fun CardBox(value: Int, isFaceUp: Boolean) {
             .size(width = 100.dp, height = 140.dp)
             .background(
                 color = if (isFaceUp) Color.White else Color(0xFF2c3e50),
-                shape = RoundedCornerShape(8.dp)
-            )
-            .border(2.dp, Color.Black, RoundedCornerShape(8.dp)),
-        contentAlignment = Alignment.Center
+                shape = RoundedCornerShape(8.dp),
+            ).border(2.dp, Color.Black, RoundedCornerShape(8.dp)),
+        contentAlignment = Alignment.Center,
     ) {
         if (isFaceUp) {
             Text(
@@ -182,13 +178,13 @@ fun CardBox(value: Int, isFaceUp: Boolean) {
                     .padding(8.dp),
                 style = MaterialTheme.typography.titleMedium,
                 color = cardColor,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
             )
             Text(
                 text = rank,
                 style = MaterialTheme.typography.displayMedium,
                 color = cardColor,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
             )
 
             Text(
@@ -199,13 +195,13 @@ fun CardBox(value: Int, isFaceUp: Boolean) {
                     .graphicsLayer { rotationZ = 180f },
                 style = MaterialTheme.typography.titleMedium,
                 color = cardColor,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
             )
         } else {
             Text(
                 text = "\uD83D\uDC37",
                 color = Color.White.copy(alpha = 0.1f),
-                fontSize = 40.sp
+                fontSize = 40.sp,
             )
         }
     }

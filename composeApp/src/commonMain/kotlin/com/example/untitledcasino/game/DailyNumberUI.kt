@@ -23,7 +23,7 @@ import untitledcasino.composeapp.generated.resources.*
 fun DailyNumberControls(vm: DailyNumberVM) {
     Column(
         modifier = Modifier.width(360.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+        verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         ChoiceBox(
             text = stringResource(Res.string.play),
@@ -31,7 +31,7 @@ fun DailyNumberControls(vm: DailyNumberVM) {
             isEnabled = !vm.isBusy,
             modifier = Modifier.fillMaxWidth(),
             baseContainerColor = Color(0xFF0c9631),
-            onClick = { vm.roll() }
+            onClick = { vm.roll() },
         )
     }
 }
@@ -47,7 +47,7 @@ fun DailyNumberVisuals(vm: DailyNumberVM) {
                 stringResource(Res.string.roll_closest)
             },
             color = if (vm.uiMessage.contains("won")) Color.Green else Color.White,
-            style = MaterialTheme.typography.bodyLarge
+            style = MaterialTheme.typography.bodyLarge,
         )
 
         Spacer(Modifier.height(24.dp))

@@ -13,7 +13,9 @@ import kotlinx.coroutines.withContext
 
 const val INIT_CREDITS = 1000
 
-class PlayerRepo(private val playerDao: PlayerDao) {
+class PlayerRepo(
+    private val playerDao: PlayerDao,
+) {
     val credits: Flow<Int?> = playerDao.getPlayerCredits()
 
     val purchaseHistory: Flow<List<PurchaseEntity>> = playerDao.getPurchaseHistory()
@@ -25,7 +27,7 @@ class PlayerRepo(private val playerDao: PlayerDao) {
 
             if (currentCredits == null) {
                 val rowsInserted = playerDao.insertInitialPlayer(
-                    PlayerEntity(id = 1, credits = INIT_CREDITS)
+                    PlayerEntity(id = 1, credits = INIT_CREDITS),
                 )
                 println("First run: Created player with ID: $rowsInserted")
             } else {
@@ -63,7 +65,7 @@ class PlayerRepo(private val playerDao: PlayerDao) {
                     credits = option.creditsReceive,
                     priceInCents = option.priceInCents,
                     timestamp = currentTimeMillis(),
-                )
+                ),
             )
         }
     }
@@ -78,7 +80,7 @@ class PlayerRepo(private val playerDao: PlayerDao) {
                     bet = bet,
                     reward = reward,
                     timestamp = currentTimeMillis(),
-                )
+                ),
             )
         }
     }

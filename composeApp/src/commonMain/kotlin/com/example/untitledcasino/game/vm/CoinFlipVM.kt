@@ -24,7 +24,7 @@ class CoinFlipVM : GameVM() {
     }
 
     fun onAnimationFinished() {
-        //had to do this because of null check :(
+        // had to do this because of null check :(
         if (won == true) {
             val bet = betAmount
             grantWinnings(bet * 2)
@@ -34,6 +34,4 @@ class CoinFlipVM : GameVM() {
         }
         sideSelection = ""
     }
-
-
 }

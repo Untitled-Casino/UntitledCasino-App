@@ -17,13 +17,10 @@ import com.multiplatform.webview.web.rememberWebViewState
 import kotlinx.serialization.Serializable
 
 @Serializable
-data object GetHelpRoute {
-
-}
+data object GetHelpRoute
 
 @Composable
 fun CasinoWebView() {
-
     val url = "https://gamblersanonymous.org/"
     val state = rememberWebViewState(url)
     val loadingState = state.loadingState

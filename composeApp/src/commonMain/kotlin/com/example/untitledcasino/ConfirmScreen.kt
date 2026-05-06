@@ -26,8 +26,7 @@ import untitledcasino.composeapp.generated.resources.*
 @Serializable
 data class ConfirmRoute(
     val creditsReceive: Int,
-) {
-}
+)
 
 @Composable
 fun ConfirmScreen(
@@ -46,7 +45,7 @@ fun ConfirmScreen(
         Text(
             text = stringResource(
                 Res.string.confirm_purchase_of_credits,
-                formatWithCommas(option.creditsReceive.toString())
+                formatWithCommas(option.creditsReceive.toString()),
             ),
             color = MaterialTheme.colorScheme.onBackground,
         )
@@ -57,7 +56,7 @@ fun ConfirmScreen(
             modifier = Modifier.weight(1f),
         )
         Row(
-            horizontalArrangement = Arrangement.SpaceBetween
+            horizontalArrangement = Arrangement.SpaceBetween,
         ) {
             Button(
                 onClick = {
@@ -67,7 +66,7 @@ fun ConfirmScreen(
                 colors = ButtonDefaults.buttonColors(
                     containerColor = MaterialTheme.colorScheme.primary,
                     contentColor = MaterialTheme.colorScheme.onPrimary,
-                )
+                ),
             ) {
                 Text(
                     text = formatPrice(option.priceInCents),
@@ -82,7 +81,7 @@ fun ConfirmScreen(
                 colors = ButtonDefaults.buttonColors(
                     containerColor = MaterialTheme.colorScheme.primary,
                     contentColor = MaterialTheme.colorScheme.onPrimary,
-                )
+                ),
             ) {
                 Text(
                     text = stringResource(Res.string.cancel),

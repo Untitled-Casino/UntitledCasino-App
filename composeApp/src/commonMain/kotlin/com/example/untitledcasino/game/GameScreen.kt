@@ -29,15 +29,15 @@ import org.jetbrains.compose.resources.stringResource
 import untitledcasino.composeapp.generated.resources.*
 
 @Serializable
-data class GameScreenRoute (
-    val gameType: String
+data class GameScreenRoute(
+    val gameType: String,
 )
 
 @Composable
 fun GameScreen(
     playerRepo: PlayerRepo,
     gameContent: GameContent,
-    vm: GameVM
+    vm: GameVM,
 ) {
     Column(
         modifier = Modifier.fillMaxWidth().padding(16.dp),
@@ -50,7 +50,7 @@ fun GameScreen(
                 .fillMaxWidth()
                 .padding(vertical = 24.dp),
             style = MaterialTheme.typography.headlineLarge,
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
         )
         Box(
             modifier = Modifier.fillMaxWidth(),
@@ -60,12 +60,12 @@ fun GameScreen(
         }
         Column(
             modifier = Modifier.padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             gameContent.controls()
             BetInput(
                 vm = vm,
-                onBetEntered = { vm.betAmount = it }
+                onBetEntered = { vm.betAmount = it },
             )
         }
     }
@@ -74,7 +74,7 @@ fun GameScreen(
 @Composable
 fun BetInput(
     vm: GameVM,
-    onBetEntered: (Int) -> Unit
+    onBetEntered: (Int) -> Unit,
 ) {
     var betAmount by rememberSaveable { mutableStateOf("") }
 
@@ -84,11 +84,11 @@ fun BetInput(
                 .fillMaxWidth()
                 .padding(vertical = 8.dp),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             Text(
                 text = stringResource(Res.string.bet),
-                style = MaterialTheme.typography.bodyLarge
+                style = MaterialTheme.typography.bodyLarge,
             )
 
             OutlinedTextField(
@@ -103,7 +103,7 @@ fun BetInput(
                     .height(60.dp),
                 placeholder = { Text("0") },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                singleLine = true
+                singleLine = true,
             )
 
             ChoiceBox(
@@ -114,7 +114,7 @@ fun BetInput(
                     betAmount = ""
                     onBetEntered(amount)
                 },
-                isEnabled = betAmount.isNotEmpty()
+                isEnabled = betAmount.isNotEmpty(),
             )
         }
 
@@ -122,8 +122,8 @@ fun BetInput(
             modifier = Modifier.fillMaxWidth(),
             text = stringResource(
                 Res.string.current_bet,
-                vm.betAmount
-            )
+                vm.betAmount,
+            ),
         )
     }
 }
