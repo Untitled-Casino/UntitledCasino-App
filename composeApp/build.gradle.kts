@@ -77,11 +77,11 @@ room {
 }
 
 android {
-    namespace = "com.example.untitledcasino"
+    namespace = "com.moravian.untitledcasino"
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {
-        applicationId = "com.example.untitledcasino"
+        applicationId = "com.moravian.untitledcasino"
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionCode = 1
